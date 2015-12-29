@@ -8,13 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/", name="homepage")
-     */
+
     public function indexAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
+        return $this->render('homepage/index.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
         ));
     }
@@ -44,7 +42,7 @@ class DefaultController extends Controller
             $em->flush();
             return $this->redirect($this->generateUrl('dashboard', array(), false));
         }else{
-            return $this->render('default/setZone.html.twig', array(
+            return $this->render('setzone/base.html.twig', array(
                 'zoneName' => '',
             ));
         }
@@ -53,21 +51,23 @@ class DefaultController extends Controller
     public function inquiryHandlerAction(Request $request){
         $name=$request->request->get('checkname');
         preg_match('/^[A-Za-z0-9\.\-\&_\@]*$/', $name, $matches);
+
         if (empty($matches)) {
-            return $this->render('divs/zoneNotVal.html.twig', array(
-                'zone' => $name,
-            ));
-        }
-        $exist = $this->getDoctrine()
-            ->getRepository('AppBundle:auth_user')
-            ->findOneBy(['zone'=>$name]);
-        if(strlen($name)<4 || $exist!=null){
-            return $this->render('divs/zoneNotAva.html.twig', array(
+            return $this->render('divs/zone/zoneNotVal.html.twig', array(
                 'zone' => $name,
             ));
         }
 
-        return $this->render('divs/zoneAva.html.twig', array(
+        $exist = $this->getDoctrine()
+            ->getRepository('AppBundle:auth_user')
+            ->findOneBy(['zone'=>$name]);
+        if(strlen($name)<4 || $exist!=null || strlen($name)>15){
+            return $this->render('divs/zone/zoneNotAva.html.twig', array(
+                'zone' => $name,
+            ));
+        }
+
+        return $this->render('divs/zone/zoneAva.html.twig', array(
             'zone' => $name,
         ));
     }
