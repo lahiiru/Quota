@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="auth_user")
  * @ORM\AttributeOverrides({@ORM\AttributeOverride(name="username", column=@ORM\Column(type="string", name="username", length=255)),})
+ * @ORM\AttributeOverrides({@ORM\AttributeOverride(name="usernameCanonical", column=@ORM\Column(type="string", name="username_canonical", length=255)),})
  */
 class auth_user extends BaseUser
 {

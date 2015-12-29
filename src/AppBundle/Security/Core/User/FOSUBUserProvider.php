@@ -54,6 +54,7 @@ class FOSUBUserProvider extends BaseClass
             //I have set all requested data with the user's username
             //modify here with relevant data
             $user->setUsername($response->getRealName());
+            $user->setUsernameCanonical($username);
             $user->setEmail($response->getEmail());
             if($service=="facebook"){
                 $user->setPicture("https://graph.facebook.com/$username/picture");
