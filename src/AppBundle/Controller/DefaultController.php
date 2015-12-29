@@ -11,10 +11,15 @@ class DefaultController extends Controller
 
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('homepage/index.html.twig', array(
+        $param=array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-        ));
+        );
+
+        if($request->query->has('ad')){
+            $param=array_merge($param,['access_denied'=>'']);
+        }
+
+        return $this->render('homepage/index.html.twig',$param);
     }
 
     public function dashboardAction(Request $request)
@@ -31,7 +36,8 @@ class DefaultController extends Controller
         return $html;
     }
 
-    public function setZoneAction(Request $request){
+    public function setZoneAction(Request $request)
+    {
         $name=$request->request->get('zonename');
         if($name){
             $user=$this->get('security.token_storage')->getToken()->getUser();
@@ -48,7 +54,13 @@ class DefaultController extends Controller
         }
     }
 
-    public function inquiryHandlerAction(Request $request){
+    public  function  failAction(Request $request)
+    {
+        return $this->redirect($this->get('router')->generate('homepage', array('ad' => '')));
+    }
+
+    public function inquiryHandlerAction(Request $request)
+    {
         $name=$request->request->get('checkname');
         preg_match('/^[A-Za-z0-9\.\-\&_\@]*$/', $name, $matches);
 

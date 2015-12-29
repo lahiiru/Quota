@@ -17,7 +17,9 @@ inquiryHandler:
 dashboard:
     path: /dashboard
     defaults: { _controller: AppBundle:Default:dashboard }
-
+fail:
+    path: /fail
+    defaults: { _controller: AppBundle:Default:fail }
 homepage:
     path: /
     defaults: { _controller: AppBundle:Default:index }

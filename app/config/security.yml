@@ -23,7 +23,7 @@ security:
                 resource_owners:
                     facebook:           "/login/check-facebook"
                     google:             "/login/check-google"
-                login_path:        /
+                login_path:        /fail
                 failure_path:      /
                 oauth_user_provider:
                     #this is my custom user provider, created from FOSUBUserProvider - will manage the
