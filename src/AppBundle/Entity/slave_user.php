@@ -41,6 +41,10 @@ class slave_user
      */
     protected $state;
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $package;
+    /**
      * @ORM\Column(type="string", length=100)
      */
     protected $comment;
@@ -171,6 +175,22 @@ class slave_user
     public function getAuthUser()
     {
         return $this->auth_user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPackage()
+    {
+        return $this->package;
+    }
+
+    /**
+     * @param mixed $package
+     */
+    public function setPackage($package)
+    {
+        $this->package = $package;
     }
 
 }

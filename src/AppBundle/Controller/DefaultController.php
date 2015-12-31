@@ -37,7 +37,7 @@ class DefaultController extends Controller
 
         $query = $em->createQuery("SELECT p FROM AppBundle\Entity\data_package p WHERE p.start < CURRENT_TIMESTAMP() AND CURRENT_TIMESTAMP() < p.end AND p.auth_user=$cId");
 
-        $cPackage = $query->getResult()[0]; // array of CustomerDTO
+        $cPackage = $query->getResult()[0];
         $pstart=$cPackage->getStart();
         $pend=$cPackage->getEnd();
 
