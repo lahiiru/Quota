@@ -10,7 +10,6 @@ use AppBundle\Entity;
 
 class ClientController extends Controller
 {
-
     public function summaryAction(Request $request){
         $cUser=$this->get('security.token_storage')->getToken()->getUser();
         $cId=$cUser->getId();
@@ -31,7 +30,6 @@ class ClientController extends Controller
         ));
         return $html;
     }
-
     public function requestsAction(Request $request){
 
     }
