@@ -22,6 +22,7 @@ class auth_user extends BaseUser
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\OneToMany(targetEntity="data_package", mappedBy="auth_user")
      */
     protected $id;
     /**

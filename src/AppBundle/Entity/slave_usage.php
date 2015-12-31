@@ -17,13 +17,17 @@ use Doctrine\ORM\Mapping as ORM;
 class slave_usage
 {
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="slave_user", inversedBy="sid")
      * @ORM\JoinColumn(name="slave_user", referencedColumnName="sid", onDelete="CASCADE")
      */
     protected $slave_user;
     /**
      * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $usageid;
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $date;
@@ -45,13 +49,87 @@ class slave_usage
         $this->kbytes = $kbytes;
     }
 
+
+
     /**
-     *  @PrePersist
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return slave_usage
      */
-    public function doStuffOnPrePersist()
+    public function setDate($date)
     {
-        $this->date = date('Y-m-d H:i:s');
+        $this->date = $date;
+
+        return $this;
     }
 
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
 
+    /**
+     * Set kbytes
+     *
+     * @param integer $kbytes
+     *
+     * @return slave_usage
+     */
+    public function setKbytes($kbytes)
+    {
+        $this->kbytes = $kbytes;
+
+        return $this;
+    }
+
+    /**
+     * Get kbytes
+     *
+     * @return integer
+     */
+    public function getKbytes()
+    {
+        return $this->kbytes;
+    }
+
+    /**
+     * Set slaveUser
+     *
+     * @param \AppBundle\Entity\slave_user $slaveUser
+     *
+     * @return slave_usage
+     */
+    public function setSlaveUser(\AppBundle\Entity\slave_user $slaveUser)
+    {
+        $this->slave_user = $slaveUser;
+
+        return $this;
+    }
+
+    /**
+     * Get slaveUser
+     *
+     * @return \AppBundle\Entity\slave_user
+     */
+    public function getSlaveUser()
+    {
+        return $this->slave_user;
+    }
+
+    /**
+     * Get usageid
+     *
+     * @return integer
+     */
+    public function getUsageid()
+    {
+        return $this->usageid;
+    }
 }

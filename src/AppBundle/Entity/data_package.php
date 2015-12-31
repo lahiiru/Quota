@@ -28,6 +28,7 @@ class data_package
     protected $auth_user;
     /**
      * @ORM\Column(type="integer")
+     *
      */
     protected $kbytes;
     /**

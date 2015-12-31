@@ -20,6 +20,7 @@ class slave_user
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\OneToMany(targetEntity="slave_usage", mappedBy="slave_user")
      */
     protected $sid;
     /**
@@ -38,7 +39,7 @@ class slave_user
     /**
      * @ORM\Column(type="integer", length=1)
      */
-    protected $blocked;
+    protected $state;
     /**
      * @ORM\Column(type="string", length=100)
      */
@@ -104,27 +105,27 @@ class slave_user
     }
 
     /**
-     * Set blocked
+     * Set state
      *
-     * @param integer $blocked
+     * @param integer $state
      *
      * @return slave_user
      */
-    public function setBlocked($blocked)
+    public function setState($state)
     {
-        $this->blocked = $blocked;
+        $this->state = $state;
 
         return $this;
     }
 
     /**
-     * Get blocked
+     * Get state
      *
      * @return integer
      */
-    public function getBlocked()
+    public function getState()
     {
-        return $this->blocked;
+        return $this->state;
     }
 
     /**

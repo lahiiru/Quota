@@ -1,0 +1,132 @@
+{% extends 'dashboard/base.html.twig' %}
+{% block contentHeader %}Overview{% endblock %}
+{% block contentDescription %}summary of everything{% endblock %}
+{% block content %}
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Usage measured by quota</h3>
+                </div>
+                {% set totalUsage=totalUsageObj.total %}
+                <!-- /.box-header -->
+                {% set color='green' %}
+                {% if totalUsage/totalPackage > 0.9 %}
+                    {% set color='red' %}
+                {% elseif totalUsage/totalPackage > 0.7 %}
+                    {% set color='yellow' %}
+                {% endif %}
+
+                <div class="box-body">
+                    <p><b>Total data usage: {{ (totalUsage*100/totalPackage)|number_format(2, '.', ',') }}%</b> ({{ (totalUsage/1000000.0)|number_format(2, '.', ',') }} of {{ (totalPackage/1000000.0)|number_format(2, '.', ',') }} Gb)</p>
+                    <div class="progress">
+                        <div id="pbar" class="progress-bar progress-bar-{{ color }}" role="progressbar" aria-valuenow="{{ totalUsage }}" aria-valuemin="0" aria-valuemax="{{ totalPackage }}" style="width: 0%">
+                            <span class="sr-only">{{ totalUsage*100/totalPackage }}%</span>
+                        </div>
+                    </div>
+                    {% if totalUsage/totalPackage < 1 %}
+                        <p>You are currently within the limit (excluding clients' pending data usage)</p>
+                    {% else %}
+                        <p>You have exceeded the package limit.</p>
+                    {% endif %}
+                </div>
+                <script type="text/javascript">
+                    window.setTimeout(drawProgbar,1000);
+                    function drawProgbar(){
+                        document.getElementById('pbar').style.width="{{ totalUsage*100/totalPackage }}%"
+                    }
+                </script>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Days to spend</h3>
+                </div>
+                <!-- /.box-header -->
+                {% set color='green' %}
+                {% if today/totalDays > 0.9 %}
+                    {% set color='red' %}
+                {% elseif today/totalDays > 0.7 %}
+                    {% set color='yellow' %}
+                {% endif %}
+
+                <div class="box-body">
+                    <p><b>Current package expired on: </b>{{ expireDate }}</p>
+                    <div class="progress">
+                        <div id="pbar2" class="progress-bar progress-bar-{{ color }}" role="progressbar" aria-valuenow="{{ today }}" aria-valuemin="0" aria-valuemax="{{ totalDays }}" style="width: 0%">
+                            <span class="sr-only">{{ today*100/totalDays }}%</span>
+                        </div>
+                    </div>
+                    {% if today-totalDays < 0 %}
+                        <p>You can spend {{ totalDays-today }} days before expiry of current package.</p>
+                    {% else %}
+                        <p>Your package was expired {{ totalDays-today }} days before.</p>
+                    {% endif %}
+                </div>
+                <script type="text/javascript">
+                    window.setTimeout(drawProgbar2,1000);
+                    function drawProgbar2(){
+                        document.getElementById('pbar2').style.width="{{ today*100/totalDays }}%"
+                    }
+                </script>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">User status</h3>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>User</th>
+                            <th>Usage</th>
+                            <th>Last Live At</th>
+                            <th>Status</th>
+                        </tr>
+                        {% for client in clientStatusDTO %}
+                            <tr>
+                                <td>{{ client.name }}</td>
+                                <td>{{ (client.usage/1000.0)|number_format(2, '.', ',') }} Mb</td>
+                                <td>{{ client.LLA }}</td>
+                                <td><span class="label label-success">{{ client.status }}</span></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Title</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                            <i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                            <i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    Footer
+                </div>
+                <!-- /.box-footer-->
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

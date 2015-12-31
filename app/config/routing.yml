@@ -13,12 +13,38 @@ inquiryHandler:
 dashboard:
     path: /dashboard
     defaults: { _controller: AppBundle:Default:dashboard }
+
 fail:
     path: /fail
     defaults: { _controller: AppBundle:Default:fail }
+
 homepage:
     path: /
     defaults: { _controller: AppBundle:Default:index }
+
+overview:
+    path: /dashboard/overview
+    defaults: { _controller: AppBundle:Default:overview }
+
+client_summary:
+    path: dashboard/client/summary
+    defaults: { _controller: AppBundle:Client:summary }
+
+client_requests:
+    path: dashboard/client/requests
+    defaults: { _controller: AppBundle:Client:requests }
+
+client_usage:
+    path: dashboard/client/usage
+    defaults: { _controller: AppBundle:Client:usage }
+
+client_packages:
+    path: dashboard/client/packages
+    defaults: { _controller: AppBundle:Client:packages }
+
+client_settings:
+    path: dashboard/client/settings
+    defaults: { _controller: AppBundle:Client:settings }
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
