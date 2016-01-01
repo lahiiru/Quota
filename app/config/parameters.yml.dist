@@ -19,4 +19,4 @@ parameters:
     google_id:          ~
     google_secret:      ~
     # A secret key that's used to generate certain security-related tokens
-    secret:            19921112
+    secret:            ~
