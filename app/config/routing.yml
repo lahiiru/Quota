@@ -26,6 +26,10 @@ overview:
     path: /dashboard/overview
     defaults: { _controller: AppBundle:Default:overview }
 
+home_error:
+    path: /error/{error_name}
+    defaults: { _controller: AppBundle:Default:homeError }
+
 client_summary:
     path: dashboard/client/summary
     defaults: { _controller: AppBundle:Client:summary }

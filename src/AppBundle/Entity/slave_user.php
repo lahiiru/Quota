@@ -55,11 +55,14 @@ class slave_user
      * @param $auth_user
      * @param $name
      */
-    public function __construct($mac, $auth_user, $name)
+    public function __construct($mac, $auth_user, $name,$state,$package)
     {
         $this->mac = $mac;
         $this->auth_user = $auth_user;
         $this->name = $name;
+        $this->state = $state;
+        $this->package = $package;
+        $this->comment="";
     }
 
 

@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\DTO;
+use AppBundle\DQL;
 use AppBundle\Entity;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -22,42 +23,51 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
         );
 
-        if($request->query->has('ad')){
-            $param=array_merge($param,['access_denied'=>'']);
-        }
-
         return $this->render('homepage/index.html.twig',$param);
+    }
+
+    public function homeErrorAction(Request $request,$error_name){
+        $errorData=
+        [
+            'access_denied'=>
+                [
+                    'model_err_title'=>'Access is denied',
+                    'model_err_body'=>'<p><b>You don\'t have privileges to access requested content.</b></p>
+                                               <p>Please sign in using your facebook profile or google plus profile. If you are already signed in and seeing this message, you can ask site administrator for privileges.</p>
+                                               <p>adm.trine@gmail.com</p>'
+                ],
+            'invalid_zone'=>
+                [
+                'model_err_title'=>'Zone name is invalid',
+                    'model_err_body'=>'<p><b>It seems you are trying to obtain restricted zone name.</b></p>
+                                               <p>Your zone name should be longer than 4 english letters which haven\'t obtained by others. If you think you are seeing this message by system fault, please contact us.</p>
+                                               <p>adm.trine@gmail.com</p>'
+                ]
+        ];
+        return $this->render('homepage/index.html.twig',$errorData[$error_name]);
     }
 
     public function overviewAction(Request $request)
     {
-        $cUser=$this->get('security.token_storage')->getToken()->getUser();
-        $cId=$cUser->getId();
-        $em = $this->getDoctrine()->getManager(); //SELECT NEW AppBundle\DTO\ClientStatusDTO(1,1,1,p.kbytes) FROM AppBundle\Entity\slave_user s JOIN s.auth_user a JOIN AppBundle\Entity\slave_usage WHERE a.id=$cId
+        $fetcher = new DQL\FetchData($this);
 
-        $query = $em->createQuery("SELECT p FROM AppBundle\Entity\data_package p WHERE p.start < CURRENT_TIMESTAMP() AND CURRENT_TIMESTAMP() < p.end AND p.auth_user=$cId");
-
-        $cPackage = $query->getResult()[0];
+        $em = $this->getDoctrine()->getManager();
+        $cId=22;
+        $cPackage = $cPackage = $fetcher->getRunningDataPackage();
         $pstart=$cPackage->getStart();
         $pend=$cPackage->getEnd();
 
-        $query = $em->createQuery("SELECT NEW AppBundle\DTO\ClientStatusDTO(su.name,MAX(u.date),SUM(u.kbytes),su.state) FROM AppBundle\Entity\slave_usage u JOIN u.slave_user as su JOIN su.auth_user as au WHERE au=$cId AND  :st < u.date AND u.date < :end GROUP BY su.sid");
-        $query->setParameter('st', $pstart)
-              ->setParameter('end', $pend);
-        $clientStatusDTO = $query->getResult();
-        var_dump($clientStatusDTO);
-        $query = $em->createQuery("SELECT au.username as authUser ,MAX(u.date) as lastUpdate,su.name,SUM(u.kbytes) as total FROM AppBundle\Entity\slave_usage u JOIN u.slave_user as su JOIN su.auth_user as au WHERE au=$cId AND  :st < u.date AND u.date < :end GROUP BY au.id");
-        $query->setParameter('st', $pstart)
-            ->setParameter('end', $pend);
+        $clientStatusDTO = $fetcher->getClientStatusDTO($cPackage);
+        //var_dump($clientStatusDTO);
 
-        $totalUsageObj = $query->getResult()[0];
-        var_dump($totalUsageObj);
+        $totalUsageObj = $fetcher->getTotalUsageObj($cPackage);
+        //var_dump($totalUsageObj);
 
         $now = new \DateTime(); // or your date as well
 
         $totDays = $pend->diff($pstart)->format("%a");
         $today = $now->diff($pstart)->format("%a");
-        var_dump($now,$pstart,$pend,$totDays,$today);
+        //var_dump($now,$pstart,$pend,$totDays,$today);
 
         $html=$this->render('dashboard/overview.html.twig', array(
             'clientStatusDTO' => $clientStatusDTO,
@@ -73,7 +83,10 @@ class DefaultController extends Controller
     public function dashboardAction(Request $request)
     {
         $user=$this->get('security.token_storage')->getToken()->getUser();
-        $this->checkForFirstLogin($user);
+        $result=$this->checkForFirstLogin($user);
+        if($result!=null){
+            return $result;
+        }
 
         $defaultData = array('message' => 'Type your message here');
         $form = $this->createFormBuilder($defaultData)
@@ -93,8 +106,6 @@ class DefaultController extends Controller
         }
         $zone= '';
 
-
-
         $html=$this->render('dashboard/index.html.twig', array(
             'form' => $form->createView(),
             'x' => $user->getUid(),
@@ -104,9 +115,10 @@ class DefaultController extends Controller
     }
 
     private function checkForFirstLogin($user){
-        var_dump($user->getZone());
-        if($user->getZone()==""){
+        if($user->getZone()=="" || $user->getZone()==null){
             return $this->redirect($this->generateUrl('setZone', array(), false));
+        }else{
+            return null;
         }
     }
 
@@ -114,6 +126,11 @@ class DefaultController extends Controller
     {
         $name=$request->request->get('zonename');
         if($name){
+            if($this->zoneValidator($name)!=0) {
+                var_dump($this->zoneValidator($name));
+                return $this->redirectToRoute('home_error', array('error_name' => 'invalid_zone'));
+            }
+
             $user=$this->get('security.token_storage')->getToken()->getUser();
             $user->setZone($name);
             $em = $this->getDoctrine()->getManager();
@@ -121,7 +138,7 @@ class DefaultController extends Controller
             $em->persist($user);
             $em->flush();
             // Creating default `Unregistered` user
-            $unregisteredUser=new Entity\slave_user("FFFFFFFFFFFF",$user,"UNREGISTERED");
+            $unregisteredUser=new Entity\slave_user("FFFFFFFFFFFF",$user,"UNREGISTERED",0,1);
             $em->persist($unregisteredUser);
             $em->flush();
             return $this->redirect($this->generateUrl('dashboard', array(), false));
@@ -134,32 +151,44 @@ class DefaultController extends Controller
 
     public  function  failAction(Request $request)
     {
-        return $this->redirect($this->get('router')->generate('homepage', array('ad' => '')));
+        return $this->redirectToRoute('home_error', array('error_name'=>'access_denied'));
     }
 
-    public function inquiryHandlerAction(Request $request)
-    {
-        $name=$request->request->get('checkname');
+    private function zoneValidator($name){
         preg_match('/^[A-Za-z0-9\.\-\&_\@]*$/', $name, $matches);
 
         if (empty($matches)) {
-            return $this->render('divs/zone/zoneNotVal.html.twig', array(
-                'zone' => $name,
-            ));
+            return 1;
         }
 
         $exist = $this->getDoctrine()
             ->getRepository('AppBundle:auth_user')
             ->findOneBy(['zone'=>$name]);
+
         if(strlen($name)<4 || $exist!=null || strlen($name)>15){
-            return $this->render('divs/zone/zoneNotAva.html.twig', array(
-                'zone' => $name,
-            ));
+            return 2;
         }
 
-        return $this->render('divs/zone/zoneAva.html.twig', array(
+        return 0;
+    }
+
+    public function inquiryHandlerAction(Request $request)
+    {
+        $name=$request->request->get('checkname');
+        $html=$this->render('divs/zone/zoneNotVal.html.twig', array(
             'zone' => $name,
         ));
+        switch($this->zoneValidator($name)){
+            case 0:
+                $html=$this->render('divs/zone/zoneAva.html.twig', array(
+                    'zone' => $name,
+                ));break;
+            case 2:
+                $html=$this->render('divs/zone/zoneNotAva.html.twig', array(
+                    'zone' => $name,
+                ));break;
+        }
+        return $html;
     }
 
     public function logoutAction(Request $request)
