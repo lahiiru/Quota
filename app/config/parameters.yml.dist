@@ -14,6 +14,9 @@ parameters:
     mailer_host:       127.0.0.1
     mailer_user:       ~
     mailer_password:   ~
-
+    facebook_id:        ~
+    facebook_secret:    ~
+    google_id:          ~
+    google_secret:      ~
     # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    secret:            19921112
