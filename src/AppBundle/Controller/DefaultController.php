@@ -104,6 +104,7 @@ class DefaultController extends Controller
     }
 
     private function checkForFirstLogin($user){
+        var_dump($user->getZone());
         if($user->getZone()==""){
             return $this->redirect($this->generateUrl('setZone', array(), false));
         }
@@ -118,6 +119,10 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($user);
+            $em->flush();
+            // Creating default `Unregistered` user
+            $unregisteredUser=new Entity\slave_user("FFFFFFFFFFFF",$user,"UNREGISTERED");
+            $em->persist($unregisteredUser);
             $em->flush();
             return $this->redirect($this->generateUrl('dashboard', array(), false));
         }else{
