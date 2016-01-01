@@ -50,9 +50,7 @@ class DefaultController extends Controller
     public function overviewAction(Request $request)
     {
         $fetcher = new DQL\FetchData($this);
-
-        $em = $this->getDoctrine()->getManager();
-        $cId=22;
+        
         $cPackage = $cPackage = $fetcher->getRunningDataPackage();
         $pstart=$cPackage->getStart();
         $pend=$cPackage->getEnd();
