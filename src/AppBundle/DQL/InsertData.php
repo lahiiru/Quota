@@ -37,5 +37,6 @@ class InsertData
         $newSlave=new slave_user($data['mac'],$cUser,$data['name'],0,$data['package']);
         $this->em->persist($newSlave);
         $this->em->flush();
+        return $newSlave->getSid();
     }
 }

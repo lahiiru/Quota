@@ -56,7 +56,7 @@ class ClientController extends Controller
         $inseter = new DQL\InsertData($this);
         $inseter->processNewUserRequest($newRequest);
 
-        //var_dump($id);
+        Response('OK');
 
     }
 
