@@ -41,8 +41,8 @@
                                 </div>
                             </td>
                             <td><span class="badge bg-{{ color }}">{{percentage }}% </span></td>
-                            <td>{{ (client.usage/1000000.0)|number_format(2, '.', ',')}}Gb</td>
-                            <td>{{ (client.package/1000000.0)|number_format(2, '.', ',') }}Gb</td>
+                            <td  class="col-md-1">{{ (client.usage/1000000.0)|number_format(2, '.', ',')}} Gb</td>
+                            <td  class="col-md-1">{{ (client.package/1000000.0)|number_format(2, '.', ',') }} Gb</td>
                         </tr>
                         {% endfor %}
                     </table>
