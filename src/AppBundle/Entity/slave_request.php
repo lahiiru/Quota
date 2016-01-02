@@ -30,9 +30,29 @@ class slave_request
      */
     protected $date;
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="json_array")
      */
     protected $request_data;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $pending;
+
+    /**
+     * @return mixed
+     */
+    public function getPending()
+    {
+        return $this->pending;
+    }
+
+    /**
+     * @param mixed $pending
+     */
+    public function setPending($pending)
+    {
+        $this->pending = $pending;
+    }
 
 
     /**

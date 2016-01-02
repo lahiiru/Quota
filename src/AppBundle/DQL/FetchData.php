@@ -74,4 +74,8 @@ class FetchData
         return $result[0];
     }
 
+    public function getRequests($pending=1){
+        return $this->fetchResult("SELECT sr as request,su as slave_user FROM AppBundle\Entity\slave_request sr JOIN sr.slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND sr.pending=$pending");
+    }
+
 }
