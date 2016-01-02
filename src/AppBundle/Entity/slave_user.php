@@ -40,6 +40,10 @@ class slave_user
      */
     protected $slave_payments;
     /**
+     * @ORM\OneToMany(targetEntity="slave_request", mappedBy="slave_user")
+     */
+    protected $slave_requests;
+    /**
      * @ORM\Column(type="string", length=30)
      */
     protected $name;
@@ -70,6 +74,22 @@ class slave_user
         $this->state = $state;
         $this->package = $package;
         $this->comment="";
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlaveRequests()
+    {
+        return $this->slave_requests;
+    }
+
+    /**
+     * @param mixed $slave_requests
+     */
+    public function setSlaveRequests($slave_requests)
+    {
+        $this->slave_requests = $slave_requests;
     }
 
     /**
