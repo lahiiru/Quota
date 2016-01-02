@@ -45,8 +45,19 @@ class ClientController extends Controller
     }
 
     public function requestAcceptAction(Request $request){
+        $fetcher = new DQL\FetchData($this);
         $id=$request->request->get('id');
-        var_dump($id);
+        $newRequest=$fetcher->validateNewRequest($id);
+
+        if($newRequest==null){
+            return ""; //implemet error
+        }
+
+        $inseter = new DQL\InsertData($this);
+        $inseter->processNewUserRequest($newRequest);
+
+        //var_dump($id);
+
     }
 
     public function usageAction(Request $request){

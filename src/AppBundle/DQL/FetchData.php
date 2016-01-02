@@ -7,7 +7,6 @@
  * Time: 8:30 PM
  */
 namespace AppBundle\DQL;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class FetchData
 {
@@ -76,6 +75,16 @@ class FetchData
 
     public function getRequests($pending=1){
         return $this->fetchResult("SELECT sr as request,su as slave_user FROM AppBundle\Entity\slave_request sr JOIN sr.slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND sr.pending=$pending");
+    }
+
+    public function validateNewRequest($requestId){ // return null if auth_user doesn't match
+        $result=$this->fetchResult("SELECT sr FROM AppBundle\Entity\slave_request sr JOIN sr.slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND sr.request_id=$requestId");
+        if(empty($result)){
+            return null;
+        }
+        else{
+            return $result[0];
+        }
     }
 
 }
