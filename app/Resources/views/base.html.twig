@@ -41,14 +41,17 @@
 <script src="{{ asset('bundles/dist/js/app.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('bundles/dist/js/demo.js') }}"></script>
-    {% if model_err_title is defined %}
-
+{% if model_err_title is defined %}
     <script type="text/javascript">
         $(window).load(function(){
             $('#myModal').modal('toggle');
         });
     </script>
-    {% endif %}
+{% endif %}
+
+{% if body_class=='hold-transition skin-blue sidebar-mini' %}
+    <script src="{{ asset('bundles/dist/js/quota_dashboard.js') }}"></script>
+{% endif %}
 {% endblock %}
 </body>
 </html>

@@ -8,29 +8,53 @@ use AppBundle\DQL;
 use AppBundle\Entity;
 class ClientController extends Controller
 {
-    public function summaryAction(Request $request){
-
+    public function summaryAction(Request $request)
+    {
         $fetcher = new DQL\FetchData($this);
-
-        $cPackage = $fetcher->getRunningDataPackage();
-
-        $pstart=$cPackage->getStart();
-        $pend=$cPackage->getEnd();
-
         $clientSummaryDTO = $fetcher->getClientSummaryDTO();
-
         $html=$this->render('dashboard/client/summary.html.twig', array(
             'arrayDTO'=>$clientSummaryDTO,
+        ));
+        return $html;
+    }
+
+    public function requestsAction(Request $request)
+    {
+        $fetcher = new DQL\FetchData($this);
+        $newRequests = $fetcher->getRequests();
+
+        $requests = new \StdClass();
+        $requests->new=[];
+        $requests->change=[];
+        $requests->message=[];
+        $requests->offer=[];
+        $requests->want=[];
+
+        foreach($newRequests as $request)
+        {
+            $type=$request['request']->getRequestData()['type'];
+            array_push($requests->$type,$request);
+        }
+
+        var_dump($requests);
+        $html=$this->render('dashboard/client/requests.html.twig', array(
+            'requests'=>$requests,
         ));
 
         return $html;
     }
-    public function requestsAction(Request $request){
+
+    public function requestAcceptAction(Request $request){
+        $id=$request->request->get('id');
+        var_dump($id);
     }
+
     public function usageAction(Request $request){
     }
+
     public function packagesAction(Request $request){
     }
+
     public function settingsAction(Request $request){
     }
 }

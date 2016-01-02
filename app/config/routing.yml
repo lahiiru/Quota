@@ -42,6 +42,10 @@ client_requests:
     path: dashboard/client/requests
     defaults: { _controller: AppBundle:Client:requests }
 
+client_request_accept:
+    path: dashboard/client/requests/accept
+    defaults: { _controller: AppBundle:Client:requestAccept }
+
 client_usage:
     path: dashboard/client/usage
     defaults: { _controller: AppBundle:Client:usage }
