@@ -20,6 +20,7 @@
                             <th>Package</th>
                             <th></th>
                         </tr>
+                        {% if requests.new is not null %}
                         {% for req in requests.new %}
                         <tr>
                             <td>{{ req.request.getRequestId }}</td>
@@ -35,6 +36,7 @@
                             </td>
                         </tr>
                         {% endfor %}
+                        {% endif %}
                     </table>
                 </div>
             </div>

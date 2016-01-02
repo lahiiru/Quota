@@ -31,11 +31,11 @@ class InsertData
     }
 
     public function processNewUserRequest($request){
-        var_dump($request->getRequestData());
         $data=$request->getRequestData();
         $cUser=$this->controller->get('security.token_storage')->getToken()->getUser();
         $newSlave=new slave_user($data['mac'],$cUser,$data['name'],0,$data['package']);
         $this->em->persist($newSlave);
+        $this->em->remove($request);
         $this->em->flush();
         return $newSlave->getSid();
     }

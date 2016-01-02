@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use AppBundle\DTO;
 use AppBundle\DQL;
 use AppBundle\Entity;
@@ -22,23 +23,24 @@ class ClientController extends Controller
     {
         $fetcher = new DQL\FetchData($this);
         $newRequests = $fetcher->getRequests();
-
-        $requests = new \StdClass();
-        $requests->new=[];
-        $requests->change=[];
-        $requests->message=[];
-        $requests->offer=[];
-        $requests->want=[];
-
-        foreach($newRequests as $request)
-        {
-            $type=$request['request']->getRequestData()['type'];
-            array_push($requests->$type,$request);
+        if(empty($newRequests)) {
+            $newRequests=[];
         }
 
-        var_dump($requests);
-        $html=$this->render('dashboard/client/requests.html.twig', array(
-            'requests'=>$requests,
+        $requests = new \StdClass();
+        $requests->new = [];
+        $requests->change = [];
+        $requests->message = [];
+        $requests->offer = [];
+        $requests->want = [];
+
+        foreach ($newRequests as $request) {
+            $type = $request['request']->getRequestData()['type'];
+            array_push($requests->$type, $request);
+        }
+
+        $html = $this->render('dashboard/client/requests.html.twig', array(
+            'requests' => $requests,
         ));
 
         return $html;
@@ -50,13 +52,12 @@ class ClientController extends Controller
         $newRequest=$fetcher->validateNewRequest($id);
 
         if($newRequest==null){
-            return ""; //implemet error
+            return new Response('ERROR');; //implemet error
         }
 
         $inseter = new DQL\InsertData($this);
         $inseter->processNewUserRequest($newRequest);
-
-        Response('OK');
+        return new Response('OK');
 
     }
 

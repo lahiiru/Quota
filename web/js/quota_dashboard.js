@@ -4,8 +4,10 @@
 $('.request-new-grant').click(
     function(){
         var requestID = $(this).closest("td").siblings()[0].innerHTML;
-        function posted(){
-            alert("");
+        document.lastRow=$(this).closest("tr");
+        function posted($data){
+            alert($data);
+            $(document.lastRow).remove();
         }
         $.ajax({
             type: "POST",
