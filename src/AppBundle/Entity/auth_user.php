@@ -22,9 +22,16 @@ class auth_user extends BaseUser
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\OneToMany(targetEntity="data_package", mappedBy="auth_user")
      */
     protected $id;
+    /**
+     * @ORM\OneToMany(targetEntity="data_package", mappedBy="auth_user")
+     */
+    protected $packages;
+    /**
+     * @ORM\OneToMany(targetEntity="slave_user", mappedBy="auth_user")
+     */
+    protected $slave_users;
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
@@ -56,6 +63,38 @@ class auth_user extends BaseUser
     {
         parent::__construct();
         // your own logic
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPackages()
+    {
+        return $this->packages;
+    }
+
+    /**
+     * @param mixed $packages
+     */
+    public function setPackages($packages)
+    {
+        $this->packages = $packages;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlaveUsers()
+    {
+        return $this->slave_users;
+    }
+
+    /**
+     * @param mixed $slave_users
+     */
+    public function setSlaveUsers($slave_users)
+    {
+        $this->slave_users = $slave_users;
     }
     
 

@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 class slave_usage
 {
     /**
-     * @ORM\ManyToOne(targetEntity="slave_user", inversedBy="sid")
+     * @ORM\ManyToOne(targetEntity="slave_user", inversedBy="slave_usages")
      * @ORM\JoinColumn(name="slave_user", referencedColumnName="sid", onDelete="CASCADE")
      */
     protected $slave_user;

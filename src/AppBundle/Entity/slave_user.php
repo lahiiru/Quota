@@ -20,7 +20,6 @@ class slave_user
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\OneToMany(targetEntity="slave_usage", mappedBy="slave_user")
      */
     protected $sid;
     /**
@@ -28,10 +27,18 @@ class slave_user
      */
     protected $mac;
     /**
-     * @ORM\ManyToOne(targetEntity="auth_user")
+     * @ORM\ManyToOne(targetEntity="auth_user", inversedBy="slave_users")
      * @ORM\JoinColumn(name="auth_user", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $auth_user;
+    /**
+     * @ORM\OneToMany(targetEntity="slave_usage", mappedBy="slave_user")
+     */
+    protected $slave_usages;
+    /**
+     * @ORM\OneToMany(targetEntity="slave_payment", mappedBy="slave_user")
+     */
+    protected $slave_payments;
     /**
      * @ORM\Column(type="string", length=30)
      */
@@ -63,6 +70,38 @@ class slave_user
         $this->state = $state;
         $this->package = $package;
         $this->comment="";
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlaveUsages()
+    {
+        return $this->slave_usages;
+    }
+
+    /**
+     * @param mixed $slave_usages
+     */
+    public function setSlaveUsages($slave_usages)
+    {
+        $this->slave_usages = $slave_usages;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlavePayments()
+    {
+        return $this->slave_payments;
+    }
+
+    /**
+     * @param mixed $slave_payments
+     */
+    public function setSlavePayments($slave_payments)
+    {
+        $this->slave_payments = $slave_payments;
     }
 
 

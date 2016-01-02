@@ -18,7 +18,7 @@ class slave_payment
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="slave_user", inversedBy="sid")
+     * @ORM\ManyToOne(targetEntity="slave_user", inversedBy="slave_payments")
      * @ORM\JoinColumn(name="slave_user", referencedColumnName="sid", onDelete="CASCADE")
      */
     protected $slave_user;

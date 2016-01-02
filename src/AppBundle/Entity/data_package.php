@@ -22,7 +22,7 @@ class data_package
      */
     protected $pid;
     /**
-     * @ORM\ManyToOne(targetEntity="auth_user", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\auth_user", inversedBy="packages")
      * @ORM\JoinColumn(name="auth_user", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $auth_user;
