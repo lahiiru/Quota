@@ -24,32 +24,30 @@
                         </tr>
                         {% for client in arrayDTO %}
                         <tr>
+                            {% set percentage=100*((client.usage/1000000.0)|number_format(2, '.', ',') / (client.package/1000000.0))|number_format(4, '.', ',') %}
+                            {% set color='green' %}
+                            {% if percentage>90 %}
+                                {% set color='red' %}
+                            {% elseif percentage >70 %}
+                                {% set color='yellow' %}
+                            {% endif %}
                             <td>{{ client.sid }}</td>
                             <td>{{ client.name }}</td>
                             <td>{{ client.mac }}</td>
                             <td>{{ client.state }}</td>
                             <td>
                                 <div class="progress progress-xs">
-                                    <div class="progress-bar progress-bar-danger" style="width: {{ client.usage/client.package }}%"></div>
+                                    <div class="progress-bar progress-bar-{{ color }}" style="width: {{percentage }}%"></div>
                                 </div>
                             </td>
-                            <td><span class="badge bg-red">{{ 100*((client.usage/1000000.0)|number_format(2, '.', ',') / (client.package/1000000.0))|number_format(4, '.', ',') }} </span></td>
+                            <td><span class="badge bg-{{ color }}">{{percentage }}% </span></td>
                             <td>{{ (client.usage/1000000.0)|number_format(2, '.', ',')}}Gb</td>
                             <td>{{ (client.package/1000000.0)|number_format(2, '.', ',') }}Gb</td>
                         </tr>
                         {% endfor %}
                     </table>
                 </div>
-                <!-- /.box-body -->
-                <div class="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                        <li><a href="#">&laquo;</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                    </ul>
-                </div>
+
             </div>
             <!-- /.box -->
         </div>
