@@ -19,6 +19,8 @@
                             <th style="width: 10px">State</th>
                             <th style="width: 300px">Usage</th>
                             <th style="width: 10px">%</th>
+                            <th style="width: 10px">Used</th>
+                            <th style="width: 10px">Total</th>
                         </tr>
                         {% for client in arrayDTO %}
                         <tr>
@@ -31,7 +33,9 @@
                                     <div class="progress-bar progress-bar-danger" style="width: {{ client.usage/client.package }}%"></div>
                                 </div>
                             </td>
-                            <td><span class="badge bg-red">{{ (client.usage/1000000.0)|number_format(2, '.', ',') }}/{{ (client.package/1000000.0)|number_format(2, '.', ',') }} Gb</span></td>
+                            <td><span class="badge bg-red">{{ 100*((client.usage/1000000.0)|number_format(2, '.', ',') / (client.package/1000000.0))|number_format(4, '.', ',') }} </span></td>
+                            <td>{{ (client.usage/1000000.0)|number_format(2, '.', ',')}}Gb</td>
+                            <td>{{ (client.package/1000000.0)|number_format(2, '.', ',') }}Gb</td>
                         </tr>
                         {% endfor %}
                     </table>
