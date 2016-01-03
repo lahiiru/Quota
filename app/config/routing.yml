@@ -42,9 +42,9 @@ client_requests:
     path: dashboard/client/requests
     defaults: { _controller: AppBundle:Client:requests }
 
-client_request_accept:
-    path: dashboard/client/requests/accept
-    defaults: { _controller: AppBundle:Client:requestAccept }
+client_request_process:
+    path: dashboard/client/requests/{action}
+    defaults: { _controller: AppBundle:Client:requestProcess }
 
 client_usage:
     path: dashboard/client/usage
@@ -57,6 +57,10 @@ client_packages:
 client_settings:
     path: dashboard/client/settings
     defaults: { _controller: AppBundle:Client:settings }
+
+settings_packages:
+    path: dashboard/settings/packages
+    defaults: { _controller: AppBundle:Settings:packages }
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

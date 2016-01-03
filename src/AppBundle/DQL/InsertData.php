@@ -30,13 +30,30 @@ class InsertData
         $this->id = $cUser->getId();
     }
 
-    public function processNewUserRequest($request){
+    private function persist($object){
+        $this->em->persist($object);
+        $this->em->flush();
+    }
+
+    private function remove($object){
+        $this->em->remove($object);
+        $this->em->flush();
+    }
+
+    public function processNewUserRequest($request,$reject=false){
+        if($reject){
+            $this->remove($request);
+            return "";
+        }
         $data=$request->getRequestData();
         $cUser=$this->controller->get('security.token_storage')->getToken()->getUser();
         $newSlave=new slave_user($data['mac'],$cUser,$data['name'],0,$data['package']);
-        $this->em->persist($newSlave);
-        $this->em->remove($request);
-        $this->em->flush();
+        $this->persist($newSlave);
+        $this->remove($request);
         return $newSlave->getSid();
+    }
+
+    public function activatePackage($package){
+        $this->persist($package);
     }
 }

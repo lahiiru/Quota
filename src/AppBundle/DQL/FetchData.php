@@ -40,7 +40,7 @@ class FetchData
     }
 
     public function getRunningDataPackage(){
-        return $this->fetchResult("SELECT p FROM AppBundle\Entity\data_package p WHERE p.start < CURRENT_TIMESTAMP() AND CURRENT_TIMESTAMP() < p.end AND p.auth_user=$this->id",true);
+        return $this->fetchResult("SELECT p FROM AppBundle\Entity\data_package p WHERE p.start < CURRENT_TIMESTAMP() AND CURRENT_TIMESTAMP() < p.end AND p.auth_user=$this->id ORDER BY p.pid DESC",true);
     }
 
     public function getClientSummaryDTO(){

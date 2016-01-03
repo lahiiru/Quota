@@ -4,6 +4,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\DTO;
 use AppBundle\DQL;
 use AppBundle\Entity;
@@ -46,7 +49,7 @@ class ClientController extends Controller
         return $html;
     }
 
-    public function requestAcceptAction(Request $request){
+    public function requestProcessAction(Request $request,$action){
         $fetcher = new DQL\FetchData($this);
         $id=$request->request->get('id');
         $newRequest=$fetcher->validateNewRequest($id);
@@ -56,17 +59,23 @@ class ClientController extends Controller
         }
 
         $inseter = new DQL\InsertData($this);
-        $inseter->processNewUserRequest($newRequest);
-        return new Response('OK');
+        $sid=$inseter->processNewUserRequest($newRequest,$action=="reject");
+        if(""==$sid){
+            return new Response("<p class=\"text-center\"><b>Successfully Rejected.</b></p>");
+        }
+        return new Response("<p class=\"text-center\"><b>Operation was successful.</b></b></p><p class=\"text-center\">Client id is $sid</p>");
 
     }
 
     public function usageAction(Request $request){
+
     }
 
     public function packagesAction(Request $request){
+
     }
 
     public function settingsAction(Request $request){
+
     }
 }
