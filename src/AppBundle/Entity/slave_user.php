@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="slave_user")
  */
-
 class slave_user
 {
     /**
@@ -59,7 +58,10 @@ class slave_user
      * @ORM\Column(type="string", length=100)
      */
     protected $comment;
-
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $banner_url;
     /**
      * slave_user constructor.
      * @param $mac
@@ -74,6 +76,7 @@ class slave_user
         $this->state = $state;
         $this->package = $package;
         $this->comment="";
+        $this->banner_url="";
     }
 
     /**
@@ -255,4 +258,128 @@ class slave_user
         $this->package = $package;
     }
 
+
+    /**
+     * Set mac
+     *
+     * @param string $mac
+     *
+     * @return slave_user
+     */
+    public function setMac($mac)
+    {
+        $this->mac = $mac;
+
+        return $this;
+    }
+
+    /**
+     * Set bannerUrl
+     *
+     * @param string $bannerUrl
+     *
+     * @return slave_user
+     */
+    public function setBannerUrl($bannerUrl)
+    {
+        $this->banner_url = $bannerUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get bannerUrl
+     *
+     * @return string
+     */
+    public function getBannerUrl()
+    {
+        return $this->banner_url;
+    }
+
+    /**
+     * Set authUser
+     *
+     * @param \AppBundle\Entity\auth_user $authUser
+     *
+     * @return slave_user
+     */
+    public function setAuthUser(\AppBundle\Entity\auth_user $authUser = null)
+    {
+        $this->auth_user = $authUser;
+
+        return $this;
+    }
+
+    /**
+     * Add slaveUsage
+     *
+     * @param \AppBundle\Entity\slave_usage $slaveUsage
+     *
+     * @return slave_user
+     */
+    public function addSlaveUsage(\AppBundle\Entity\slave_usage $slaveUsage)
+    {
+        $this->slave_usages[] = $slaveUsage;
+
+        return $this;
+    }
+
+    /**
+     * Remove slaveUsage
+     *
+     * @param \AppBundle\Entity\slave_usage $slaveUsage
+     */
+    public function removeSlaveUsage(\AppBundle\Entity\slave_usage $slaveUsage)
+    {
+        $this->slave_usages->removeElement($slaveUsage);
+    }
+
+    /**
+     * Add slavePayment
+     *
+     * @param \AppBundle\Entity\slave_payment $slavePayment
+     *
+     * @return slave_user
+     */
+    public function addSlavePayment(\AppBundle\Entity\slave_payment $slavePayment)
+    {
+        $this->slave_payments[] = $slavePayment;
+
+        return $this;
+    }
+
+    /**
+     * Remove slavePayment
+     *
+     * @param \AppBundle\Entity\slave_payment $slavePayment
+     */
+    public function removeSlavePayment(\AppBundle\Entity\slave_payment $slavePayment)
+    {
+        $this->slave_payments->removeElement($slavePayment);
+    }
+
+    /**
+     * Add slaveRequest
+     *
+     * @param \AppBundle\Entity\slave_request $slaveRequest
+     *
+     * @return slave_user
+     */
+    public function addSlaveRequest(\AppBundle\Entity\slave_request $slaveRequest)
+    {
+        $this->slave_requests[] = $slaveRequest;
+
+        return $this;
+    }
+
+    /**
+     * Remove slaveRequest
+     *
+     * @param \AppBundle\Entity\slave_request $slaveRequest
+     */
+    public function removeSlaveRequest(\AppBundle\Entity\slave_request $slaveRequest)
+    {
+        $this->slave_requests->removeElement($slaveRequest);
+    }
 }

@@ -9,6 +9,7 @@
 namespace AppBundle\DQL;
 
 
+use AppBundle\Entity\slave_usage;
 use AppBundle\Entity\slave_user;
 
 class InsertData
@@ -22,12 +23,14 @@ class InsertData
      * @param $em
      * @param $id
      */
-    public function __construct($controller)
+    public function __construct($controller,$anonymous)
     {
         $this->controller=$controller;
-        $cUser=$controller->get('security.token_storage')->getToken()->getUser();
         $this->em = $controller->getDoctrine()->getManager();
-        $this->id = $cUser->getId();
+        if(!$anonymous) {
+            $cUser = $controller->get('security.token_storage')->getToken()->getUser();
+            $this->id = $cUser->getId();
+        }
     }
 
     private function persist($object){
@@ -55,5 +58,17 @@ class InsertData
 
     public function activatePackage($package){
         $this->persist($package);
+    }
+
+    private function getSlave($mac){
+        return $this->controller->getDoctrine()
+                ->getRepository('AppBundle:slave_user')
+                ->findOneByMac($mac);
+    }
+
+    public function updateUsage($mac,$kbytes){
+        $slave=$this->getSlave($mac);
+        $usage=new slave_usage($slave,new \DateTime('now'),$kbytes);
+        $this->persist($usage);
     }
 }

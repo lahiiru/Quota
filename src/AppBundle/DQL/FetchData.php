@@ -19,12 +19,14 @@ class FetchData
      * @param $em
      * @param $id
      */
-    public function __construct($controller)
+    public function __construct($controller,$anonymous=false)
     {
         $this->controller=$controller;
-        $cUser=$controller->get('security.token_storage')->getToken()->getUser();
         $this->em = $controller->getDoctrine()->getManager();
-        $this->id = $cUser->getId();
+        if(!$anonymous) {
+            $cUser = $controller->get('security.token_storage')->getToken()->getUser();
+            $this->id = $cUser->getId();
+        }
     }
 
     private function fetchResult($dql,$firstElem=false){
@@ -45,6 +47,10 @@ class FetchData
 
     public function getClientSummaryDTO(){
         return $this->fetchResult("SELECT NEW AppBundle\DTO\ClientSummaryDTO(su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes)) FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE au.id=$this->id GROUP BY su");
+    }
+
+    public function test(){
+        return $this->fetchResult("SELECT au FROM AppBundle\Entity\slave_user AS su JOIN su.auth_user au");
     }
 
     public function getClientStatusDTO($runningPackage){
@@ -85,6 +91,15 @@ class FetchData
         else{
             return $result[0];
         }
+    }
+
+    public function getClientStatus($mac){
+        $result=$this->fetchResult("SELECT su.state FROM AppBundle\Entity\slave_user su WHERE su.mac=$mac",true);
+        return $result;
+    }
+
+    public function getClientResponse($mac){
+        return $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su WHERE su.mac=$mac GROUP BY su",true);
     }
 
 }

@@ -62,6 +62,14 @@ settings_packages:
     path: dashboard/settings/packages
     defaults: { _controller: AppBundle:Settings:packages }
 
+request_user_check:
+    path: /request/user/{mac}/check
+    defaults: { _controller: AppBundle:Request:userCheck }
+
+request_usage_update:
+    path: /request/user/{mac}/usage/{kbytes}
+    defaults: { _controller: AppBundle:Request:usageUpdate }
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
