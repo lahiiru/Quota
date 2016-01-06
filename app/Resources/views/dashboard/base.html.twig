@@ -155,7 +155,7 @@
                         <li><a href="{{ path('client_settings') }}" {% if tab_settings is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Settings</a></li>
                     </ul>
                 </li>
-                <li class={{ li_class }}>
+                <li class={{ cost_li_class }}>
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Costing</span>
@@ -164,14 +164,14 @@
                         {% endif %}
                         <i class="fa fa-angle-{{ costing_arrow }} pull-right"></i>
                     </a>
-                    <ul class=  {{ ul_class }}  style="display:{{ display }}">
+                    <ul class=  {{ cost_ul_class }}  style="display:{{ cost_display }}">
                         <li><a href="../UI/general.html" {% if cost_summary is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Summary</a></li>
                         <li><a href="../UI/icons.html" {% if cost_payment is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Add Payment</a></li>
                         <li><a href="../UI/buttons.html" {% if cost_duepayment is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Payments Due</a></li>
                         <li><a href="../UI/sliders.html" {% if cost_settings is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Settings</a></li>
                     </ul>
                 </li>
-                <li class={{ li_class }}>
+                <li class={{ settings_li_class }}>
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Settings</span>
@@ -180,7 +180,7 @@
                         {% endif %}
                         <i class="fa fa-angle-{{ settings_arrow }} pull-right"></i>
                     </a>
-                    <ul class=  {{ ul_class }}  style="display:{{ display }}">
+                    <ul class=  {{ settings_ul_class }}  style="display:{{ settings_display }}">
                         <li><a href="{{ path('settings_packages') }}" {% if settings_packages is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Packages</a></li>
                         <li><a href="../UI/icons.html" {% if tab_about is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> About</a></li>
                     </ul>
