@@ -31,15 +31,15 @@ class RequestController extends Controller
                 switch ($result['state']) {
                     case 0:
                         $responseObj->status="OK";
-                        $responseObj->details=$fetcher->getClientResponse($mac);
+                        if($fetcher->isOver($mac)){
+                            $responseObj->status="OVER";
+                        }
                         break;
                     case 1:
                         $responseObj->status='BLOCKED';
                         break;
-                    case 2:
-                        $responseObj->status='OVER';
-                        break;
                 }
+                $responseObj->details=$fetcher->getClientResponse($mac);
             }
         }
         catch(Exception $e){
