@@ -125,28 +125,34 @@
           </span>
                 </div>
             </form>
+
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li class="header">MAIN NAVIGATION</li>
+                <li class="header">MAIN NAVIGATION </li>
                 <li>
                     <a href="{{ path('overview') }}">
                         <i class="fa fa-th"></i> <span>Overview</span>
                         <small class="label pull-right bg-green">Hot</small>
                     </a>
                 </li>
-                <li class="treeview">
+                <li class={{ li_class }}>
                     <a href="#">
                         <i class="fa fa-laptop"></i>
                         <span>My Clients</span>
-                        <i class="fa fa-angle-left pull-right"></i>
+                        {% if arrow is not defined %}
+                            {% set arrow='left' %}
+                        {% endif %}
+                        <i class="fa fa-angle-{{ arrow }} pull-right"></i>
                     </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ path('client_summary') }}"><i class="fa fa-circle-o"></i> Summary</a></li>
-                        <li><a href="{{ path('client_requests') }}"><i class="fa fa-circle-o"></i> Requests</a></li>
-                        <li><a href="{{ path('client_usage') }}"><i class="fa fa-circle-o"></i> Usage</a></li>
-                        <li><a href="{{ path('client_packages') }}"><i class="fa fa-circle-o"></i> Packages</a></li>
-                        <li><a href="{{ path('client_settings') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
+
+
+                    <ul class=  {{ ul_class }}  style="display:{{ display }}">
+                        <li><a href="{{ path('client_summary') }}" {% if tab_summary is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Summary</a></li>
+                        <li><a href="{{ path('client_requests') }}"{% if tab_requests is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Requests</a></li>
+                        <li><a href="{{ path('client_usage') }}" {% if tab_client is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Usage</a></li>
+                        <li><a href="{{ path('client_packages') }}" {% if tab_packages is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Packages</a></li>
+                        <li><a href="{{ path('client_settings') }}" {% if tab_settings is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Settings</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
