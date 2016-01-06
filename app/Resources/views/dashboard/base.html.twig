@@ -155,28 +155,34 @@
                         <li><a href="{{ path('client_settings') }}" {% if tab_settings is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Settings</a></li>
                     </ul>
                 </li>
-                <li class="treeview">
+                <li class={{ li_class }}>
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Costing</span>
-                        <i class="fa fa-angle-left pull-right"></i>
+                        {% if costing_arrow is not defined %}
+                            {% set costing_arrow='left' %}
+                        {% endif %}
+                        <i class="fa fa-angle-{{ costing_arrow }} pull-right"></i>
                     </a>
-                    <ul class="treeview-menu">
-                        <li><a href="../UI/general.html"><i class="fa fa-circle-o"></i> Summary</a></li>
-                        <li><a href="../UI/icons.html"><i class="fa fa-circle-o"></i> Add Payment</a></li>
-                        <li><a href="../UI/buttons.html"><i class="fa fa-circle-o"></i> Payments Due</a></li>
-                        <li><a href="../UI/sliders.html"><i class="fa fa-circle-o"></i> Settings</a></li>
+                    <ul class=  {{ ul_class }}  style="display:{{ display }}">
+                        <li><a href="../UI/general.html" {% if cost_summary is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Summary</a></li>
+                        <li><a href="../UI/icons.html" {% if cost_payment is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Add Payment</a></li>
+                        <li><a href="../UI/buttons.html" {% if cost_duepayment is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Payments Due</a></li>
+                        <li><a href="../UI/sliders.html" {% if cost_settings is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Settings</a></li>
                     </ul>
                 </li>
-                <li class="treeview">
+                <li class={{ li_class }}>
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Settings</span>
-                        <i class="fa fa-angle-left pull-right"></i>
+                        {% if settings_arrow is not defined %}
+                            {% set settings_arrow='left' %}
+                        {% endif %}
+                        <i class="fa fa-angle-{{ settings_arrow }} pull-right"></i>
                     </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ path('settings_packages') }}"><i class="fa fa-circle-o"></i> Packages</a></li>
-                        <li><a href="../UI/icons.html"><i class="fa fa-circle-o"></i> About</a></li>
+                    <ul class=  {{ ul_class }}  style="display:{{ display }}">
+                        <li><a href="{{ path('settings_packages') }}" {% if settings_packages is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Packages</a></li>
+                        <li><a href="../UI/icons.html" {% if tab_about is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> About</a></li>
                     </ul>
                 </li>
                 <li>
