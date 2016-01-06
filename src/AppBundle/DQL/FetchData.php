@@ -94,12 +94,12 @@ class FetchData
     }
 
     public function getClientStatus($mac){
-        $result=$this->fetchResult("SELECT su.state FROM AppBundle\Entity\slave_user su WHERE su.mac=$mac",true);
+        $result=$this->fetchResult("SELECT su.state FROM AppBundle\Entity\slave_user su WHERE su.mac='$mac'",true);
         return $result;
     }
 
     public function getClientResponse($mac){
-        return $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su WHERE su.mac=$mac GROUP BY su",true);
+        return $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su WHERE su.mac='$mac' GROUP BY su",true);
     }
 
 }
