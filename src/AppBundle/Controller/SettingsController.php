@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Util;
 use AppBundle\DTO;
 use AppBundle\DQL;
 use AppBundle\Entity;
@@ -61,5 +62,15 @@ class SettingsController extends  Controller
         $fetcher = new DQL\FetchData($this);
         return $this->render('dashboard/settings/myzone.html.twig', array(
         ));
+    }
+
+    public function changePasskeyAction(Request $request){
+        $user=$this->get('security.token_storage')->getToken()->getUser();
+        $user->setPkey($user->getSkey());
+        $user->setSkey(Util\PassGenerator::generateStrongPassword());
+        $em=$this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return $this->redirectToRoute('settings_myzone', array());
     }
 }

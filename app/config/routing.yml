@@ -66,6 +66,10 @@ settings_myzone:
     path: dashboard/settings/myzone
     defaults: { _controller: AppBundle:Settings:myZone }
 
+change_passkey:
+    path: dashboard/settings/change_passkey
+    defaults: { _controller: AppBundle:Settings:changePasskey }
+
 request_user_check:
     path: /request/user/{zone}/{mac}/check
     defaults: { _controller: AppBundle:Request:userCheck }

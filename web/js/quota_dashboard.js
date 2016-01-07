@@ -3,6 +3,15 @@
  */
 $(document).ready(function(){
     // EVENT LISTENERS BELOW
+    $('#reveal').change(
+        function(){
+            if ($(this).is(':checked')) {
+                $('#inputPassword3').attr('type','text')
+            }else{
+                $('#inputPassword3').attr('type','password')
+            }
+        });
+
     $('.request-new-grant').click(
         function() {
             processAction(1, this)
