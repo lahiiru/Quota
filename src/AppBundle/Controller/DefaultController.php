@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Util;
 use AppBundle\DTO;
 use AppBundle\DQL;
 use AppBundle\Entity;
@@ -131,8 +132,8 @@ class DefaultController extends Controller
 
             $user=$this->get('security.token_storage')->getToken()->getUser();
             $user->setZone($name);
-            $user->setPkey($this->generateStrongPassword());
-            $user->setSkey($this->generateStrongPassword());
+            $user->setPkey(Util\SSIDEncryptor::encode($name));
+            $user->setSkey(Util\PassGenerator::generateStrongPassword());
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($user);
@@ -149,40 +150,6 @@ class DefaultController extends Controller
         }
     }
 
-    private function generateStrongPassword($length = 10, $add_dashes = false, $available_sets = 'luds')
-    {
-        $sets = array();
-        if(strpos($available_sets, 'l') !== false)
-            $sets[] = 'abcdefghjkmnpqrstuvwxyz';
-        if(strpos($available_sets, 'u') !== false)
-            $sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
-        if(strpos($available_sets, 'd') !== false)
-            $sets[] = '23456789';
-        if(strpos($available_sets, 's') !== false)
-            $sets[] = '!@#$%&*?';
-        $all = '';
-        $password = '';
-        foreach($sets as $set)
-        {
-            $password .= $set[array_rand(str_split($set))];
-            $all .= $set;
-        }
-        $all = str_split($all);
-        for($i = 0; $i < $length - count($sets); $i++)
-            $password .= $all[array_rand($all)];
-        $password = str_shuffle($password);
-        if(!$add_dashes)
-            return $password;
-        $dash_len = floor(sqrt($length));
-        $dash_str = '';
-        while(strlen($password) > $dash_len)
-        {
-            $dash_str .= substr($password, 0, $dash_len) . '-';
-            $password = substr($password, $dash_len);
-        }
-        $dash_str .= $password;
-        return $dash_str;
-    }
 
     public  function  failAction(Request $request)
     {

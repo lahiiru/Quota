@@ -24,60 +24,59 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Zone credentials</h3>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-3 control-label">Username</label>
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">Username</label>
 
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputEmail3" value="{{ app.user.username }}" placeholder="Email">
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control " id="inputEmail3" value="{{ app.user.username }}" placeholder="Email" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-3 control-label">ID</label>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">ID</label>
 
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputEmail3" value="{{ app.user.uid }}" placeholder="Regitered On">
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputEmail3" value="{{ app.user.uid }}" placeholder="Regitered On" readonly>
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">PassKey</label>
 
-                    <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">PassKey</label>
-
-                        <div class="col-sm-9">
-                            <input type="password" class="form-control" id="inputPassword3" value="{{ app.user.pkey }}" placeholder="Password">
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="inputPassword3" value="{{ app.user.pkey }}" placeholder="Password" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <div class="checkbox">
-                                <label>
-                                    <input id="reveal" type="checkbox"> Unmask key
-                                </label>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="reveal" type="checkbox"> Unmask key
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">Zone Name</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputEmail3" value="{{ app.user.zone }}" placeholder="Zone Name" readonly>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-3 control-label">Zone Name</label>
-
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputEmail3" value="{{ app.user.zone }}" placeholder="Zone Name">
-                        </div>
-                    </div>
-
-
-                </div>
+                </form>
             </div>
-            <!-- /.box -->
         </div>
+            <!-- /.box -->
         <div class="col-md-6">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Running master package</h3>
+                    <h3 class="box-title">Change passKey</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-
+                    <p>It is recommended to change passKey only if all clients have connected at least one time after the last password change.</p>
+                    <button type="button" onclick="window.location='{{ path('change_passkey') }}'" class="btn btn-warning">Change PassKey</button>
                 </div>
             </div>
             <!-- /.box -->
