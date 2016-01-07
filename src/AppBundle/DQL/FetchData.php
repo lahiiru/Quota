@@ -93,17 +93,17 @@ class FetchData
         }
     }
 
-    public function getClientStatus($mac){
-        $result=$this->fetchResult("SELECT su.state FROM AppBundle\Entity\slave_user su WHERE su.mac='$mac'",true);
+    public function getClientStatus($mac,$zone){
+        $result=$this->fetchResult("SELECT su.state FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone'",true);
         return $result;
     }
 
-    public function isOver($mac){
-        return $this->fetchResult("SELECT su.package-SUM(u.kbytes) as state FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su WHERE su.mac='$mac' GROUP BY su",true)['state']<1000;
+    public function isOver($mac,$zone){
+        return $this->fetchResult("SELECT su.package-SUM(u.kbytes) as state FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone' GROUP BY su",true)['state']<1000;
     }
 
-    public function getClientResponse($mac){
-        return $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su WHERE su.mac='$mac' GROUP BY su",true);
+    public function getClientResponse($mac,$zone){
+        return $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone' GROUP BY su",true);
     }
 
 }

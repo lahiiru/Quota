@@ -60,14 +60,14 @@ class InsertData
         $this->persist($package);
     }
 
-    private function getSlave($mac){
+    private function getSlave($mac,$zone){
         return $this->controller->getDoctrine()
                 ->getRepository('AppBundle:slave_user')
-                ->findOneByMac($mac);
+                ->findOneByMac(['mac'=>$mac,'zone'=>$zone]);
     }
 
-    public function updateUsage($mac,$kbytes){
-        $slave=$this->getSlave($mac);
+    public function updateUsage($mac,$zone,$kbytes){
+        $slave=$this->getSlave($mac,$zone);
         $usage=new slave_usage($slave,new \DateTime('now'),$kbytes);
         $this->persist($usage);
     }

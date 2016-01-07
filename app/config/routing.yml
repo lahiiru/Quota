@@ -63,11 +63,11 @@ settings_packages:
     defaults: { _controller: AppBundle:Settings:packages }
 
 request_user_check:
-    path: /request/user/{mac}/check
+    path: /request/user/{zone}/{mac}/check
     defaults: { _controller: AppBundle:Request:userCheck }
 
 request_usage_update:
-    path: /request/user/{mac}/usage/{kbytes}
+    path: /request/user/{zone}/{mac}/usage/{kbytes}
     defaults: { _controller: AppBundle:Request:usageUpdate }
 
 fos_user_security:
