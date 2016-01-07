@@ -13,6 +13,7 @@ class FetchData
     private $em;
     private $id;
     private $controller;
+    private $cuser;
 
     /**
      * FetchData constructor.
@@ -25,6 +26,7 @@ class FetchData
         $this->em = $controller->getDoctrine()->getManager();
         if(!$anonymous) {
             $cUser = $controller->get('security.token_storage')->getToken()->getUser();
+            $this->cuser=$cUser;
             $this->id = $cUser->getId();
         }
     }
