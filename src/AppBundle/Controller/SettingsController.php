@@ -53,4 +53,40 @@ class SettingsController extends  Controller
             'runningPackage' => $fetcher->getRunningDataPackage()
         ));
     }
+
+    public function myZoneAction(Request $request){
+        $user=$this->get('security.token_storage')->getToken()->getUser();
+        $data_package = new Entity\data_package($user);
+
+        $form = $this->createFormBuilder($data_package)
+            ->add('kbytes', IntegerType::class, array(
+                'required' => true,
+                'attr' => array(
+                    'style' => 'width: 100px',
+                    'maxlength' => '10',
+                    'min' => '100000',
+                    'step' => '100000'
+                ),
+                'label' => 'Balance in KB'
+            ))
+            ->add('start', DateType::class)
+            ->add('end', DateType::class)
+            ->add('Active', SubmitType::class, array('label' => 'Activate'))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // ... perform some action, such as saving the task to the database
+            $inserter = new DQL\InsertData($this);
+            $inserter->activatePackage($data_package);
+            return $this->redirect($request->getUri());
+        }
+
+        $fetcher = new DQL\FetchData($this);
+        return $this->render('dashboard/settings/myzone.html.twig', array(
+            'form' => $form->createView(),
+            'runningPackage' => $fetcher->getRunningDataPackage()
+        ));
+    }
 }

@@ -1,0 +1,74 @@
+{% set settings_li_class='treeview-active' %}
+{% set settings_display='block' %}
+{% set settings_ul_class='treeview-menu menu-open' %}
+
+{% set li_class='treeview' %}
+{% set display='none' %}
+{% set ul_class='treeview-menu ' %}
+
+{% set cost_li_class='treeview' %}
+{% set cost_display='none' %}
+{% set cost_ul_class='treeview-menu ' %}
+
+{% set settings_packages='' %}
+{% set settings_arrow='down' %}
+
+{% extends 'dashboard/base.html.twig' %}
+{% block contentHeader %}My Zone{% endblock %}
+{% block contentDescription %}Customize my zone{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Activate new package</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Running master package</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <p class="text-green">
+                        {{ (runningPackage.getKbytes/1000000.0) |number_format(2, '.', ',') }} GB package from
+                        {{ runningPackage.getStart|date('Y-m-d') }} to
+                        {{ runningPackage.getEnd|date('Y-m-d') }}
+                        is currently <b>active</b>
+                    </p>
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    <div class="modal" id="package-info">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Package Info</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{% endblock %}

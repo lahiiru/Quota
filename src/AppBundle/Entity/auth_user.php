@@ -48,7 +48,14 @@ class auth_user extends BaseUser
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     protected $zone;
-
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $pkey;
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $skey;
     /** @ORM\Column(name="uid", type="string", length=255) */
     protected $uid;
 
@@ -58,6 +65,38 @@ class auth_user extends BaseUser
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $registedOn;
+
+    /**
+     * @return mixed
+     */
+    public function getSkey()
+    {
+        return $this->skey;
+    }
+
+    /**
+     * @param mixed $skey
+     */
+    public function setSkey($skey)
+    {
+        $this->skey = $skey;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPkey()
+    {
+        return $this->pkey;
+    }
+
+    /**
+     * @param mixed $pkey
+     */
+    public function setPkey($pkey)
+    {
+        $this->pkey = $pkey;
+    }
 
     public function __construct()
     {

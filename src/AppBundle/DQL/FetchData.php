@@ -103,7 +103,7 @@ class FetchData
     }
 
     public function getClientResponse($mac,$zone){
-        return $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone' GROUP BY su",true);
+        return $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone' GROUP BY su",true);
     }
 
 }
