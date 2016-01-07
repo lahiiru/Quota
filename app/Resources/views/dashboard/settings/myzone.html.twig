@@ -27,21 +27,29 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
+                        <label for="inputEmail3" class="col-sm-3 control-label">Username</label>
 
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputEmail3" value="{{ app.user.username }}" placeholder="Email">
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputEmail3" value="{{ app.user.username }}" placeholder="Email">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-2 control-label">PassKey</label>
+                        <label for="inputEmail3" class="col-sm-3 control-label">ID</label>
 
-                        <div class="col-sm-10">
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputEmail3" value="{{ app.user.uid }}" placeholder="Regitered On">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">PassKey</label>
+
+                        <div class="col-sm-9">
                             <input type="password" class="form-control" id="inputPassword3" value="{{ app.user.pkey }}" placeholder="Password">
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
+                        <div class="col-sm-offset-3 col-sm-9">
                             <div class="checkbox">
                                 <label>
                                     <input id="reveal" type="checkbox"> Unmask key
@@ -50,23 +58,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
+                        <label for="inputEmail3" class="col-sm-3 control-label">Zone Name</label>
 
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputEmail3" value="{{ app.user.username }}" placeholder="Email">
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputEmail3" value="{{ app.user.zone }}" placeholder="Zone Name">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
 
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputEmail3" value="{{ app.user.username }}" placeholder="Email">
-                        </div>
-                    </div>
-                    {{ app.user.zone }}
 
-                    {{ app.user.uid }}
-                    {{ app.user.pkey }}
                 </div>
             </div>
             <!-- /.box -->
