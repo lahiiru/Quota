@@ -75,12 +75,58 @@ class ClientController extends Controller
     }
 
     public function packagesAction(Request $request){
-        $html = $this->render('dashboard/client/requests.html.twig', array(
+        $fetcher=new DQL\FetchData($this);
+        $package=$fetcher->getRunningDataPackage()->getKbytes()/1000000;
+
+        $srt='[0';
+        $tempArray=[0];
+        $num=$package;
+        $x=0.01;
+        $add=0.04;
+        while($num>=$x){
+            $srt.=','.$x;
+            array_push($tempArray,$x);
+            if($x==0.01)$add=0.04;
+            if($x==0.05)$add=0.05;
+            if($x==0.1)$add=0.4;
+            if($x>=0.5){
+                $add=0.5;
+            }
+            if($x>=5){
+                $add=1;
+            }
+            $x=$x+$add;
+        }
+        $srt.=']';
+
+        $packages=$fetcher->getPackageDetail();
+        $mappedPackageArray=[];
+        foreach($packages as $a){
+            array_push($mappedPackageArray,
+                [
+                    'name' => $a['name'],
+                    'package' => $this->getClosestIndex($a['package']/1000000,$tempArray)
+                ]
+            );
+        }
+        $html = $this->render('dashboard/client/packages.html.twig', array(
+            'range' => $srt,
+            'slavePackages' => $mappedPackageArray,
+            'total' => $package
         ));
 
         return $html;
     }
 
+    private function getClosestIndex($search, $arr) {
+        $closest = null;
+        foreach ($arr as $item) {
+            if ($closest === null || abs($search - $closest) > abs($item - $search)) {
+                $closest = $item;
+            }
+        }
+        return array_search($closest, $arr);
+    }
     public function settingsAction(Request $request){
 
     }

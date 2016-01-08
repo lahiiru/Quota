@@ -108,8 +108,8 @@ class FetchData
         return $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone' GROUP BY su",true);
     }
 
-    public function getOutdatedList(){
-
+    public function getPackageDetail(){
+        return $this->fetchResult("SELECT su.name, su.package FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND su.mac!='FFFFFFFFFFFF'");
     }
 
 }

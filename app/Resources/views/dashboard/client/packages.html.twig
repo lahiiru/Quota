@@ -1,36 +1,93 @@
 {% set nav_path='client/packages' %}
 
 {% extends 'dashboard/base.html.twig' %}
-{% block contentHeader %}Requests{% endblock %}
-{% block contentDescription %}Received pending requests{% endblock %}
+{% block contentHeader %}Packages{% endblock %}
+{% block contentDescription %}Change client's packages{% endblock %}
 {% block content %}
 
     <div class="row">
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">New user requests</h3>
+                    <h3 class="box-title">Total shared portion</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-
+                    <div class="col-sm-12">
+                        <div class="progress progress-sm active">
+                            <div class="quota_total progress-bar progress-bar-aqua" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="{{ total }}" style="width: 0%">
+                                <span class="sr-only">20% Complete</span>
+                            </div>
+                        </div>
+                        <p>Sharing <b><span id="shared">0</span> GB</b> from total {{ total }} GB</p>
+                        <input type="hidden" id="totalQuota" value="{{ total }}" />
+                    </div>
                 </div>
             </div>
             <!-- /.box -->
         </div>
     </div>
-
-
 
     <div class="row">
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Change packages</h3>
+                    <h3 class="box-title">Share the master package to clients</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+                    <div class="row">
 
+                    </div>
+                    {% set i = 0 %}
+                    {% for slave in slavePackages %}
+                    <div class="row">
+                        <div class="col-sm-2">
+                            {{ slave.name }}
+                        </div>
+                        <div class="col-sm-10">
+                            <input id="range_{{ i }}" class="quota_slider" />
+                            <script>
+                                $(document).ready(function () {
+                                    $("#range_{{ i }}").ionRangeSlider({
+                                        grid: true,
+                                        from: {{ slave.package }},
+                                        prefix: "Quota: ",
+                                        postfix: "",
+                                        keyboard: true,
+                                        max_postfix: "Total package ",
+                                        values: {{ range }},
+                                        onFinish: checkTotal,
+                                        onChange: checkFreze,
+                                        prettify_enabled: true,
+                                        prettify: function (num) {
+                                            var text=" GB";
+                                            if(num < 1){
+                                                num*=1000;
+                                                text=" MB";
+                                            }
+                                            return num+text;
+                                        }
+                                    });
+                                });
+                            </script>
+                            {% set i = i + 1 %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <script>
+                        $(document).ready(
+                                function(){
+                                    checkTotal();
+                                }
+                        )
+                    </script>
+
+                </div>
+                <div class="box-body">
+                <div class="box-footer">
+                    <button type="button" onclick="window.location='#'" class="package-submit btn btn-warning pull-right">Save changes</button>
+                </div>
                 </div>
             </div>
             <!-- /.box -->
@@ -38,22 +95,7 @@
     </div>
 
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Messages</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-
-                </div>
-            </div>
-            <!-- /.box -->
-        </div>
-    </div>
-
-    <div class="modal" id="request-info">
+    <div class="modal" id="package-info">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
