@@ -23,7 +23,7 @@ class InsertData
      * @param $em
      * @param $id
      */
-    public function __construct($controller,$anonymous)
+    public function __construct($controller,$anonymous=false)
     {
         $this->controller=$controller;
         $this->em = $controller->getDoctrine()->getManager();
@@ -43,17 +43,31 @@ class InsertData
         $this->em->flush();
     }
 
-    public function processNewUserRequest($request,$reject=false){
+    public function processRequest($request,$reject=false){
         if($reject){
             $this->remove($request);
-            return "";
+            return ".";
         }
         $data=$request->getRequestData();
+        $type=$data['type'];
         $cUser=$this->controller->get('security.token_storage')->getToken()->getUser();
-        $newSlave=new slave_user($data['mac'],$cUser,$data['name'],0,$data['package']);
-        $this->persist($newSlave);
-        $this->remove($request);
-        return $newSlave->getSid();
+        switch($type){
+            case 'new':
+                $newSlave=new slave_user($data['mac'],$cUser,$data['name'],0,$data['package']);
+                $this->persist($newSlave);
+                $this->remove($request);
+                return $newSlave->getSid();
+            case 'message':
+                $this->remove($request);
+                return null;
+            case 'change':
+                $newPackage=$data['package'];
+                $slave=$request->getSlaveUser();
+                $slave->setPackage($newPackage);
+                $this->persist($slave);
+                return $slave->getSid();
+        }
+        return null;
     }
 
     public function activatePackage($package){

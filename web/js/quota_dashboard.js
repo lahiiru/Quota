@@ -14,15 +14,22 @@ $(document).ready(function(){
 
     $('.request-new-grant').click(
         function() {
-            processAction(1, this)
+            processNewUserAction(1, this)
         }
     );
 
     $('.request-new-reject').click(
         function() {
-            processAction(0, this)
+            processNewUserAction(0, this)
         }
     );
+
+    $('.request-msg-remove').click(
+        function() {
+            processNewUserAction(0, this)
+        }
+    );
+
     $('#form_kbytes').wrap('<div id="kbytes" class="input-group"></div>');
     $('#form_kbytes').parent().prepend('<span class="input-group-addon" id="basic-addon2">0.00 GB</span>');
     $('#form_kbytes').change(
@@ -36,8 +43,8 @@ $(document).ready(function(){
 
 
 // DEFINITIONS BELOW
-function processAction(accept,context){
-    document.y=$(context).closest("td").siblings()[0].innerHTML;
+function processNewUserAction(accept,context){
+
     var requestID = $(context).closest("td").siblings()[0].innerHTML;
     document.lastRow=$(context).closest("tr");
     $url="requests/reject";
@@ -45,9 +52,10 @@ function processAction(accept,context){
         $url="requests/accept";
     }
     function posted(data){
-        document.x=$('.modal-body');
         $('.modal-body')[0].innerHTML="<p>"+data+"</p>";
-        $('#request-info').modal('toggle');
+        if(data.indexOf('Unknown') == -1){
+            $('#request-info').modal('toggle');
+        }
         if(!/error/i.test(data)) {
             $(document.lastRow).remove();
         }

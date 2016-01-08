@@ -125,7 +125,6 @@
           </span>
                 </div>
             </form>
-
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
@@ -136,57 +135,47 @@
                         <small class="label pull-right bg-green">Hot</small>
                     </a>
                 </li>
-                <li class={{ li_class }}>
+                <li class="treeview {% if 'client/' in nav_path %}active{% endif %}">
                     <a href="#">
                         <i class="fa fa-laptop"></i>
                         <span>My Clients</span>
-                        {% if arrow is not defined %}
-                            {% set arrow='left' %}
-                        {% endif %}
-                        <i class="fa fa-angle-{{ arrow }} pull-right"></i>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
 
-
-                    <ul class=  {{ ul_class }}  style="display:{{ display }}">
-                        <li><a href="{{ path('client_summary') }}" {% if tab_summary is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Summary</a></li>
-                        <li><a href="{{ path('client_requests') }}"{% if tab_requests is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Requests</a></li>
-                        <li><a href="{{ path('client_usage') }}" {% if tab_client is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Usage</a></li>
-                        <li><a href="{{ path('client_packages') }}" {% if tab_packages is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Packages</a></li>
-                        <li><a href="{{ path('client_settings') }}" {% if tab_settings is defined %}style="color:#fff;" {% endif %}><i class="fa fa-circle-o"></i> Settings</a></li>
+                    <ul class="treeview-menu">
+                        <li class="{% if 'client/summary' in nav_path %}active{% endif %}"><a href="{{ path('client_summary') }}"><i class="fa fa-circle-o"></i> Summary</a></li>
+                        <li class="{% if 'client/requests' in nav_path %}active{% endif %}"><a href="{{ path('client_requests') }}"><i class="fa fa-circle-o"></i> Requests</a></li>
+                        <li class="{% if 'client/usage' in nav_path %}active{% endif %}"><a href="{{ path('client_usage') }}"><i class="fa fa-circle-o"></i> Usage</a></li>
+                        <li class="{% if 'client/packages' in nav_path %}active{% endif %}"><a href="{{ path('client_packages') }}"><i class="fa fa-circle-o"></i> Packages</a></li>
+                        <li class="{% if 'client/settings' in nav_path %}active{% endif %}"><a href="{{ path('client_settings') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
                     </ul>
                 </li>
-                <li class={{ cost_li_class }}>
+                <li class="treeview {% if 'costing/' in nav_path %}active{% endif %}">
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Costing</span>
-                        {% if costing_arrow is not defined %}
-                            {% set costing_arrow='left' %}
-                        {% endif %}
-                        <i class="fa fa-angle-{{ costing_arrow }} pull-right"></i>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
-                    <ul class=  {{ cost_ul_class }}  style="display:{{ cost_display }}">
-                        <li><a href="../UI/general.html" {% if cost_summary is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Summary</a></li>
-                        <li><a href="../UI/icons.html" {% if cost_payment is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Add Payment</a></li>
-                        <li><a href="../UI/buttons.html" {% if cost_duepayment is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Payments Due</a></li>
-                        <li><a href="../UI/sliders.html" {% if cost_settings is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Settings</a></li>
+                    <ul class="treeview-menu">
+                        <li class="{% if 'costing/summary' in nav_path %}active{% endif %}"><a href="#"><i class="fa fa-circle-o"></i> Summary</a></li>
+                        <li class="{% if 'costing/add_payment' in nav_path %}active{% endif %}"><a href="#"><i class="fa fa-circle-o"></i> Add Payment</a></li>
+                        <li class="{% if 'costing/payments_due' in nav_path %}active{% endif %}"><a href="#"><i class="fa fa-circle-o"></i> Payments Due</a></li>
+                        <li class="{% if 'costing/settings' in nav_path %}active{% endif %}"><a href="#"><i class="fa fa-circle-o"></i> Settings</a></li>
                     </ul>
                 </li>
-                <li class={{ settings_li_class }}>
+                <li class="treeview {% if 'settings/' in nav_path %}active{% endif %}">
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Settings</span>
-                        {% if settings_arrow is not defined %}
-                            {% set settings_arrow='left' %}
-                        {% endif %}
-                        <i class="fa fa-angle-{{ settings_arrow }} pull-right"></i>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
-                    <ul class=  {{ settings_ul_class }}  style="display:{{ settings_display }}">
-                        <li><a href="{{ path('settings_packages') }}" {% if settings_packages is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> Packages</a></li>
-                        <li><a href="{{ path('settings_myzone') }}" {% if tab_myZone is defined %}style="color:#fff;" {% endif %} ><i class="fa fa-circle-o"></i> myZone</a></li>
+                    <ul class="treeview-menu">
+                        <li class="{% if 'settings/packages' in nav_path %}active{% endif %}"><a href="{{ path('settings_packages') }}"><i class="fa fa-circle-o"></i> Packages</a></li>
+                        <li class="{% if 'settings/myzone' in nav_path %}active{% endif %}"><a href="{{ path('settings_myzone') }}"><i class="fa fa-circle-o"></i> myZone</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="../mailbox/mailbox.html">
+                    <a href="#">
                         <i class="fa fa-envelope"></i> <span>Inbox</span>
                         <small class="label pull-right bg-yellow">12</small>
                     </a>

@@ -59,8 +59,11 @@ class ClientController extends Controller
         }
 
         $inseter = new DQL\InsertData($this);
-        $sid=$inseter->processNewUserRequest($newRequest,$action=="reject");
-        if(""==$sid){
+        $sid=$inseter->processRequest($newRequest,$action=="reject");
+        if($sid==null){
+            return new Response("<p class=\"text-center\"><b>Unknown response.</b></p>");
+        }
+        elseif("."==$sid){
             return new Response("<p class=\"text-center\"><b>Successfully Rejected.</b></p>");
         }
         return new Response("<p class=\"text-center\"><b>Operation was successful.</b></b></p><p class=\"text-center\">Client id is $sid</p>");
@@ -72,7 +75,10 @@ class ClientController extends Controller
     }
 
     public function packagesAction(Request $request){
+        $html = $this->render('dashboard/client/requests.html.twig', array(
+        ));
 
+        return $html;
     }
 
     public function settingsAction(Request $request){

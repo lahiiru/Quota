@@ -1,51 +1,65 @@
-{% set nav_path='settings/packages' %}
+{% set nav_path='client/packages' %}
 
 {% extends 'dashboard/base.html.twig' %}
-{% block contentHeader %}Packages{% endblock %}
-{% block contentDescription %}Master package details{% endblock %}
+{% block contentHeader %}Requests{% endblock %}
+{% block contentDescription %}Received pending requests{% endblock %}
 {% block content %}
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Activate new package</h3>
+                    <h3 class="box-title">New user requests</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-                </div>
-            </div>
-            <!-- /.box -->
-        </div>
-        <div class="col-md-6">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Running master package</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <p class="text-green">
-                    {{ (runningPackage.getKbytes/1000000.0) |number_format(2, '.', ',') }} GB package from
-                    {{ runningPackage.getStart|date('Y-m-d') }} to
-                    {{ runningPackage.getEnd|date('Y-m-d') }}
-                        is currently <b>active</b>
-                    </p>
+
                 </div>
             </div>
             <!-- /.box -->
         </div>
     </div>
 
-    <div class="modal" id="package-info">
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Change packages</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Messages</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    <div class="modal" id="request-info">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">Package Info</h4>
+                    <h4 class="modal-title">Request Info</h4>
                 </div>
                 <div class="modal-body">
 
