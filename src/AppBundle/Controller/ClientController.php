@@ -75,7 +75,13 @@ class ClientController extends Controller
     }
 
     public function packagesAction(Request $request){
-        $html = $this->render('dashboard/client/requests.html.twig', array(
+        $fetcher = new DQL\FetchData($this);
+        $clients=$fetcher->getClients();
+
+
+
+        $html = $this->render('dashboard/client/packages.html.twig', array(
+            'clients'=> $clients,
         ));
 
         return $html;

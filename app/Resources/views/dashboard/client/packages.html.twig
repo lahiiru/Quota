@@ -1,8 +1,8 @@
 {% set nav_path='client/packages' %}
 
 {% extends 'dashboard/base.html.twig' %}
-{% block contentHeader %}Requests{% endblock %}
-{% block contentDescription %}Received pending requests{% endblock %}
+{% block contentHeader %}Packages{% endblock %}
+{% block contentDescription %}packages of clients{% endblock %}
 {% block content %}
 
     <div class="row">
@@ -13,6 +13,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+                  <?php   var_dump( clients ) >
 
                 </div>
             </div>
