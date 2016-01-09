@@ -54,6 +54,10 @@ client_packages:
     path: dashboard/client/packages
     defaults: { _controller: AppBundle:Client:packages }
 
+client_package_change:
+    path: dashboard/client/package/change
+    defaults: { _controller: AppBundle:Client:packageChange }
+
 client_settings:
     path: dashboard/client/settings
     defaults: { _controller: AppBundle:Client:settings }

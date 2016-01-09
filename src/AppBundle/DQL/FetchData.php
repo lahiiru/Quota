@@ -109,7 +109,14 @@ class FetchData
     }
 
     public function getPackageDetail(){
-        return $this->fetchResult("SELECT su.name, su.package FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND su.mac!='FFFFFFFFFFFF'");
+        return $this->fetchResult("SELECT su.sid, su.name, su.package FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND su.mac!='FFFFFFFFFFFF'");
     }
 
+    public function getClientBySid($sid,$zone){
+        return $this->fetchResult("SELECT su FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE su.sid='$sid' AND au.zone='$zone'",true);
+    }
+
+    public function getClientByMac($mac,$zone){
+        return $this->fetchResult("SELECT su FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone'",true);
+    }
 }

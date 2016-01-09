@@ -46,7 +46,7 @@
                             {{ slave.name }}
                         </div>
                         <div class="col-sm-10">
-                            <input id="range_{{ i }}" class="quota_slider" />
+                            <input sid="{{ slave.sid }}" id="range_{{ i }}" class="quota_slider" />
                             <script>
                                 $(document).ready(function () {
                                     $("#range_{{ i }}").ionRangeSlider({
@@ -55,10 +55,10 @@
                                         prefix: "Quota: ",
                                         postfix: "",
                                         keyboard: true,
-                                        max_postfix: "Total package ",
+                                        max_postfix: "-{{ i }}-",
                                         values: {{ range }},
                                         onFinish: checkTotal,
-                                        onChange: checkFreze,
+                                        onChange: checkFreeze,
                                         prettify_enabled: true,
                                         prettify: function (num) {
                                             var text=" GB";
@@ -86,7 +86,10 @@
                 </div>
                 <div class="box-body">
                 <div class="box-footer">
-                    <button type="button" onclick="window.location='#'" class="package-submit btn btn-warning pull-right">Save changes</button>
+                    <div class="btn-group pull-right">
+                        <button type="button" onclick="window.location='#'" class="package-submit btn btn-warning">Save changes</button>
+                        <button type="button" class="package-reset btn btn-default">Clear changes</button>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -101,7 +104,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">Request Info</h4>
+                    <h4 class="modal-title">Package Info</h4>
                 </div>
                 <div class="modal-body">
 

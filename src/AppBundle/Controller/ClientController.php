@@ -55,7 +55,7 @@ class ClientController extends Controller
         $newRequest=$fetcher->validateNewRequest($id);
 
         if($newRequest==null){
-            return new Response('ERROR');; //implemet error
+            return new Response('ERROR'); //implemet error
         }
 
         $inseter = new DQL\InsertData($this);
@@ -104,6 +104,7 @@ class ClientController extends Controller
         foreach($packages as $a){
             array_push($mappedPackageArray,
                 [
+                    'sid' => $a['sid'],
                     'name' => $a['name'],
                     'package' => $this->getClosestIndex($a['package']/1000000,$tempArray)
                 ]
@@ -116,6 +117,27 @@ class ClientController extends Controller
         ));
 
         return $html;
+    }
+
+    public function packageChangeAction(Request $request){
+        $fetcher=new DQL\FetchData($this);
+        $json=$request->request->get("data");
+        $packages=json_decode($json);
+        $sum = array_reduce($packages, function($i, $obj)
+        {
+            return $i += $obj->package;
+        });
+        $total=$fetcher->getRunningDataPackage()->getKbytes()/1000000;
+        if($total<$sum){
+            return new Response("<p><b>Error</b></p><p>You can't exceed master package limit.</p>" );
+        }
+        $inserter=new DQL\InsertData($this);
+        $user=$this->get('security.token_storage')->getToken()->getUser();
+        $zone=$user->getZone();
+        foreach($packages as $p){
+            $inserter->updateClientPackage($p->sid,$zone,$p->package*1000000);
+        }
+        return new Response("<p><b>Success</b></p><p>Slave packages are updated.</p>");
     }
 
     private function getClosestIndex($search, $arr) {

@@ -145,9 +145,9 @@
                     <ul class="treeview-menu">
                         <li class="{% if 'client/summary' in nav_path %}active{% endif %}"><a href="{{ path('client_summary') }}"><i class="fa fa-circle-o"></i> Summary</a></li>
                         <li class="{% if 'client/requests' in nav_path %}active{% endif %}"><a href="{{ path('client_requests') }}"><i class="fa fa-circle-o"></i> Requests</a></li>
-                        <li class="{% if 'client/usage' in nav_path %}active{% endif %}"><a href="{{ path('client_usage') }}"><i class="fa fa-circle-o"></i> Usage</a></li>
+                        {#<li class="{% if 'client/usage' in nav_path %}active{% endif %}"><a href="{{ path('client_usage') }}"><i class="fa fa-circle-o"></i> Usage</a></li>#}
                         <li class="{% if 'client/packages' in nav_path %}active{% endif %}"><a href="{{ path('client_packages') }}"><i class="fa fa-circle-o"></i> Packages</a></li>
-                        <li class="{% if 'client/settings' in nav_path %}active{% endif %}"><a href="{{ path('client_settings') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
+                        {#<li class="{% if 'client/settings' in nav_path %}active{% endif %}"><a href="{{ path('client_settings') }}"><i class="fa fa-circle-o"></i> Settings</a></li>#}
                     </ul>
                 </li>
                 <li class="treeview {% if 'costing/' in nav_path %}active{% endif %}">
@@ -202,11 +202,6 @@
                     {% endblock %}
                 </small>
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Examples</a></li>
-                <li class="active">Blank page</li>
-            </ol>
         </section>
 
         <!-- Main content -->

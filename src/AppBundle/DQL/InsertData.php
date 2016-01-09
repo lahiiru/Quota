@@ -70,14 +70,28 @@ class InsertData
         return null;
     }
 
+    public function updateClientPackage($sid,$zone,$package){
+        $su=$this->getSlaveBySid($sid,$zone);
+        if($su==null){
+            return null;
+        }
+        $su->setPackage($package);
+        $this->persist($su);
+        return true;
+    }
+
     public function activatePackage($package){
         $this->persist($package);
     }
 
     private function getSlave($mac,$zone){
-        return $this->controller->getDoctrine()
-                ->getRepository('AppBundle:slave_user')
-                ->findOneByMac(['mac'=>$mac,'zone'=>$zone]);
+        $fetcher=new FetchData($this->controller);
+        return $fetcher->getClientByMac($mac,$zone);
+    }
+
+    private function getSlaveBySid($sid,$zone){
+        $fetcher=new FetchData($this->controller);
+        return $fetcher->getClientBySid($sid,$zone);
     }
 
     public function updateUsage($mac,$zone,$kbytes){
