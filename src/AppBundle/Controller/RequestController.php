@@ -46,7 +46,7 @@ class RequestController extends Controller
             $responseObj->status="ERROR";
         }
         finally{
-            return new Response(str_replace('"',"'",json_encode($responseObj)));
+            return new Response(str_replace("'","\"",json_encode($responseObj)));
         }
     }
     public function usageUpdateAction(Request $request,$zone,$mac,$kbytes){
@@ -80,7 +80,7 @@ class RequestController extends Controller
         catch(Exception $e){
             $responseObj->status='ERROR';
         }finally{
-            return new Response(str_replace('"',"'",json_encode($responseObj)));
+            return new Response(str_replace("'","\"",json_encode($responseObj)));
         }
 
     }

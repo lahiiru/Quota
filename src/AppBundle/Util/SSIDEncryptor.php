@@ -8,7 +8,6 @@
 
 namespace AppBundle\Util;
 
-
 class SSIDEncryptor
 {
     public static function encode($ssid) {
