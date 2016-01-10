@@ -17,9 +17,9 @@ class InsertData
     private $em;
     private $id;
     private $controller;
-
+    private $isAnonymous;
     /**
-     * FetchData constructor.
+     * InsertData constructor.
      * @param $em
      * @param $id
      */
@@ -27,6 +27,7 @@ class InsertData
     {
         $this->controller=$controller;
         $this->em = $controller->getDoctrine()->getManager();
+        $this->isAnonymous = $anonymous;
         if(!$anonymous) {
             $cUser = $controller->get('security.token_storage')->getToken()->getUser();
             $this->id = $cUser->getId();
@@ -85,12 +86,12 @@ class InsertData
     }
 
     private function getSlave($mac,$zone){
-        $fetcher=new FetchData($this->controller);
+        $fetcher=new FetchData($this->controller,$this->isAnonymous);
         return $fetcher->getClientByMac($mac,$zone);
     }
 
     private function getSlaveBySid($sid,$zone){
-        $fetcher=new FetchData($this->controller);
+        $fetcher=new FetchData($this->controller,$this->isAnonymous);
         return $fetcher->getClientBySid($sid,$zone);
     }
 
