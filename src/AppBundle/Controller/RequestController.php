@@ -62,14 +62,15 @@ class RequestController extends Controller
                 switch ($result['state']) {
                     case 0:
                         $responseObj->status="OK";
+                        if($fetcher->isOver($mac,$zone)){
+                            $responseObj->status="OVER";
+                        }
                         break;
                     case 1:
-                        $responseObj->status='OK';
-                        break;
-                    case 2:
-                        $responseObj->status='OK';
+                        $responseObj->status='BLOCKED';
                         break;
                 }
+                $responseObj->details=$fetcher->getClientResponse($mac,$zone);
                 if($kbytes<=0){
                     $responseObj->status='INVALID';
                 }else{
