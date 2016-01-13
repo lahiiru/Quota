@@ -82,6 +82,10 @@ request_usage_update:
     path: /request/user/{zone}/{mac}/usage/{kbytes}
     defaults: { _controller: AppBundle:Request:usageUpdate }
 
+banner_index:
+    path: /banner
+    defaults: { _controller: AppBundle:Banner:index }
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
