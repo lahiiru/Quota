@@ -16,12 +16,13 @@
                     <table class="table table-bordered">
                         <tr>
                             <th style="width: 10px">#</th>
-                            <th>Name</th>
+                            <th >Name</th>
                             <th style="width: 40px">MAC</th>
                             <th style="width: 10px">State</th>
                             <th style="width: 300px">Usage</th>
                             <th style="width: 10px">%</th>
                             <th style="width: 10px">Used</th>
+                            <th style="width: 10px">Free</th>
                             <th style="width: 10px">Total</th>
                         </tr>
                         {% for client in arrayDTO %}
@@ -44,6 +45,7 @@
                             </td>
                             <td><span class="badge bg-{{ color }}">{{percentage }}% </span></td>
                             <td  class="col-md-1">{{ (client.usage/1000000.0)|number_format(2, '.', ',')}} Gb</td>
+                            <td  class="col-md-1">{{ ((client.package-client.usage)/1000000.0)|number_format(2, '.', ',')}} Gb</td>
                             <td  class="col-md-1">{{ (client.package/1000000.0)|number_format(2, '.', ',') }} Gb</td>
                         </tr>
                         {% endfor %}
