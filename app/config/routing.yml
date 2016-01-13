@@ -9,9 +9,9 @@ logout:
 setZone:
     path: /zone
     defaults: { _controller: AppBundle:Default:setZone }
-    
+
 banner_index:
-    path: /banner
+    path: /banner/page
     defaults: { _controller: AppBundle:Banner:index }
 
 inquiryHandler:
