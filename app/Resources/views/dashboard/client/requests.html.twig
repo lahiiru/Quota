@@ -126,8 +126,8 @@
                                     <td>{{ req.request.getRequestId }}</td>
                                     <td class="col-md-2">{{ req.request.getDate|date('Y-m-d H:i:s') }}</td>
                                     <td class="col-md-2">{{ req.request.getSlaveUser.name }}</td>
-                                    <td class="col-md-2">{{ req.request.getRequestData.subject }} </td>
-                                    <td class="col-md-4">{{ req.request.getRequestData.body }} </td>
+                                    <td class="col-md-2">{{ req.request.getRequestData.subject|url_decode }} </td>
+                                    <td class="col-md-4">{{ req.request.getRequestData.body|url_decode }} </td>
                                     <td>
                                         <div class="btn-group pull-right">
                                             <button type="button" class="request-msg-remove btn btn-danger btn-xs"><i class="fa fa-fw fa-close"></i>Remove</button>
