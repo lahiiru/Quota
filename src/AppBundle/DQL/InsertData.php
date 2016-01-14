@@ -11,6 +11,8 @@ namespace AppBundle\DQL;
 
 use AppBundle\Entity\slave_usage;
 use AppBundle\Entity\slave_user;
+use Proxies\__CG__\AppBundle\Entity\slave_request;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class InsertData
 {
@@ -99,5 +101,29 @@ class InsertData
         $slave=$this->getSlave($mac,$zone);
         $usage=new slave_usage($slave,new \DateTime('now'),$kbytes);
         $this->persist($usage);
+    }
+
+    public function addChangeRequest($mac,$zone,$package){
+        $slave = $this->getSlave($mac,$zone);
+        $request = new slave_request();
+        if($slave==null){
+            return false;
+        }
+        try{
+            $request->setSlaveUser($slave);
+            $request->setPending(1);
+            $request->setDate(new \DateTime('now'));
+            $data =
+                [
+                    "type"=>"change",
+                    "package"=>"$package"
+                ];
+            $request->setRequestData($data);
+            $this->persist($request);
+            return true;
+        }
+        catch(Exception $e){
+            return false;
+        }
     }
 }
