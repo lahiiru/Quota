@@ -71,12 +71,12 @@ class RequestController extends Controller
                         $responseObj->status='BLOCKED';
                         break;
                 }
-                $responseObj->details=$fetcher->getClientResponse($mac,$zone);
                 if($kbytes<=0){
                     $responseObj->status='INVALID';
                 }else{
                     $inserter->updateUsage($mac,$zone,$kbytes);
                 }
+                $responseObj->details=$fetcher->getClientResponse($mac,$zone);
             }
         }
         catch(Exception $e){
