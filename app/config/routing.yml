@@ -86,6 +86,9 @@ request_usage_update:
     path: /request/user/{zone}/{mac}/usage/{kbytes}
     defaults: { _controller: AppBundle:Request:usageUpdate }
 
+request_user_change:
+    path: /request/user/{zone}/{mac}/change/{package}
+    defaults: { _controller: AppBundle:Request:change }
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

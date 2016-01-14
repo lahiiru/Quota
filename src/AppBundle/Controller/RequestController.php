@@ -53,7 +53,6 @@ class RequestController extends Controller
     public function usageUpdateAction(Request $request,$zone,$mac,$kbytes){
         $responseObj = new \StdClass();
         try {
-
             $inserter = new DQL\InsertData($this,true);
             $fetcher = new DQL\FetchData($this,true);
 
@@ -84,7 +83,19 @@ class RequestController extends Controller
         }finally{
             return new Response(str_replace("'","\"",json_encode($responseObj)));
         }
+    }
 
+    public function changeAction(Request $request,$zone,$mac,$package){
+        if($package<1000){
+            return new Response("INVALID");
+        }
+        $inserter = new DQL\InsertData($this,true);
+        if($inserter->addChangeRequest($mac,$zone,$package)){
+            return new Response("OK");
+        }
+        else{
+            return new Response("ERROR");
+        }
     }
 
 }
