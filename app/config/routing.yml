@@ -92,7 +92,7 @@ request_user_change:
 
 request_user_message:
     path: /request/user/{zone}/{mac}/message/{subject}/{body}
-    defaults: { _controller: AppBundle:Request:change }
+    defaults: { _controller: AppBundle:Request:message }
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
