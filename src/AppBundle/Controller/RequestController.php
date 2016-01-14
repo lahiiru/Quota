@@ -98,4 +98,18 @@ class RequestController extends Controller
         }
     }
 
+    public function messageAction(Request $request,$zone,$mac,$subject,$body){
+        if(strlen($subject)<1 || strlen($body)<1){
+            return new Response("INVALID");
+        }
+
+        $inserter = new DQL\InsertData($this,true);
+        if($inserter->addMessageRequest($mac,$zone,$subject,$body)){
+            return new Response("OK");
+        }
+        else{
+            return new Response("ERROR");
+        }
+    }
+
 }
