@@ -126,4 +126,29 @@ class InsertData
             return false;
         }
     }
+
+    public function addMessageRequest($mac,$zone,$subject,$body){
+        $slave = $this->getSlave($mac,$zone);
+        $request = new slave_request();
+        if($slave==null){
+            return false;
+        }
+        try{
+            $request->setSlaveUser($slave);
+            $request->setPending(1);
+            $request->setDate(new \DateTime('now'));
+            $data =
+                [
+                    "type"=>"message",
+                    "subject"=>"$subject",
+                    "body"=>"$body"
+                ];
+            $request->setRequestData($data);
+            $this->persist($request);
+            return true;
+        }
+        catch(Exception $e){
+            return false;
+        }
+    }
 }
