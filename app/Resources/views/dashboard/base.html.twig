@@ -9,7 +9,7 @@
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="../../index2.html" class="logo">
+        <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>Q</b>ta</span>
             <!-- logo for regular state and mobile devices -->
@@ -116,23 +116,19 @@
                 </div>
             </div>
             <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-            </button>
-          </span>
-                </div>
-            </form>
+
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION </li>
                 <li>
+                    <a href="{{ path('download') }}">
+                        <i class="fa fa-download"></i> <span>Download App</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ path('overview') }}">
                         <i class="fa fa-th"></i> <span>Overview</span>
-                        <small class="label pull-right bg-green">Hot</small>
                     </a>
                 </li>
                 <li class="treeview {% if 'client/' in nav_path %}active{% endif %}">
@@ -174,13 +170,6 @@
                         <li class="{% if 'settings/myzone' in nav_path %}active{% endif %}"><a href="{{ path('settings_myzone') }}"><i class="fa fa-circle-o"></i> myZone</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-envelope"></i> <span>Inbox</span>
-                        <small class="label pull-right bg-yellow">12</small>
-                    </a>
-                </li>
-
             </ul>
         </section>
         <!-- /.sidebar -->

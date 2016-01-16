@@ -82,7 +82,7 @@ fos_user:
 
 hwi_oauth:
     http_client:
-        proxy: ''
+        proxy: 'cache.mrt.ac.lk:3128'
     #this is my custom user provider, created from FOSUBUserProvider - will manage the
     #automatic user registration on your site, with data from the provider (facebook. google, etc.)
     #and also, the connecting part (get the token and the user_id)

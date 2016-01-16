@@ -53,3 +53,4 @@ security:
         - { path: ^/banner, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/dashboard, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/download, role: IS_AUTHENTICATED_FULLY }

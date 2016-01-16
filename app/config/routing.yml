@@ -18,9 +18,9 @@ inquiryHandler:
     path: /dashboard/inquiryHandler
     defaults: { _controller: AppBundle:Default:inquiryHandler }
 
-dashboard:
-    path: /dashboard
-    defaults: { _controller: AppBundle:Default:dashboard }
+download:
+    path: /download
+    defaults: { _controller: AppBundle:Default:download }
 
 fail:
     path: /fail
