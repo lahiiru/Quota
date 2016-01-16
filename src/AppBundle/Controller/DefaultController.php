@@ -14,6 +14,9 @@ use AppBundle\DTO;
 use AppBundle\DQL;
 use AppBundle\Entity;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class DefaultController extends Controller
 {
@@ -78,37 +81,62 @@ class DefaultController extends Controller
         ));
         return $html;
     }
-
-    public function dashboardAction(Request $request)
+    private function downloadFileAction($os)
     {
-        $user=$this->get('security.token_storage')->getToken()->getUser();
-        $result=$this->checkForFirstLogin($user);
-        if($result!=null){
-            return $result;
+        /**
+         * $basePath can be either exposed (typically inside web/)
+         * or "internal"
+         */
+        $basePath = $this->container->getParameter('kernel.root_dir').'/Resources/my_custom_folder';
+        $dir = $this->get('kernel')->getRootDir() . "/../../../Dropbox/quota/updates";
+        $handle = fopen("$dir/updates.txt", "r");
+        if ($handle) {
+            $version="0.0.0";
+            $link="";
+            while (($line = fgets($handle)) !== false) {
+                $s=explode('#',$line);
+                if(version_compare($s[0],$version)==1){
+                    $link=$s[1];
+                    $version=$s[0];
+                }
+            }
+
+            fclose($handle);
+        } else {
+            // error opening the file.
         }
 
-        $defaultData = array('message' => 'Type your message here');
-        $form = $this->createFormBuilder($defaultData)
-            ->add('name', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('message', TextareaType::class)
-            ->add('send', SubmitType::class)
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $data = ['name'=>'','email'=>'','message'=>''];
-            // data is an array with "name", "email", and "message" keys
-            $data = $form->getData();
-            var_dump($data);
+        $a=explode("/",$link);
+        $filename = trim(end($a));
+        $filePath="$dir/$filename";
+        // check if file exists
+        $fs = new FileSystem();
+        if (!$fs->exists($filePath)) {
+            throw $this->createNotFoundException();
         }
-        $zone= '';
+        $filename="Quota_Setup_$os.exe";
+        // prepare BinaryFileResponse
+        $response = new BinaryFileResponse($filePath);
+        $response->trustXSendfileTypeHeader();
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
 
-        $html=$this->render('dashboard/index.html.twig', array(
-            'form' => $form->createView(),
-            'x' => $user->getUid(),
-            'logout_url' => $this->generateUrl('logout', array(), false)
+        return $response;
+    }
+
+    public function downloadAction(Request $request)
+    {
+
+        if($request->query->has('win8')){
+            return $this->downloadFileAction("win8");
+        }
+        if($request->query->has('win7')){
+            return $this->downloadFileAction("win7");
+        }
+        $html=$this->render('dashboard/download.html.twig', array(
         ));
         return $html;
     }
