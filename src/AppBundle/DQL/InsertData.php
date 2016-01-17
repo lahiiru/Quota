@@ -68,6 +68,7 @@ class InsertData
                 $slave=$request->getSlaveUser();
                 $slave->setPackage($newPackage);
                 $this->persist($slave);
+                $this->remove($request);
                 return $slave->getSid();
         }
         return null;
