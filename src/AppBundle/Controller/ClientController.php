@@ -149,6 +149,7 @@ class ClientController extends Controller
         }
         return array_search($closest, $arr);
     }
+
     public function settingsAction(Request $request){
 
     }
