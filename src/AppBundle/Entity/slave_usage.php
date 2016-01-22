@@ -35,7 +35,11 @@ class slave_usage
      * @ORM\Column(type="integer")
      */
     protected $kbytes;
-
+    /**
+     * @ORM\ManyToOne(targetEntity="usage_type", inversedBy="slave_usage")
+     * @ORM\JoinColumn(name="usage_type", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $usage_type;
     /**
      * slave_usage constructor.
      * @param $slave_user
