@@ -31,11 +31,11 @@ class usage_type
      */
     protected $slave_usages;
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="time", nullable=true)
      */
     protected $start;
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="time", nullable=true)
      */
     protected $end;
 
