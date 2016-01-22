@@ -85,10 +85,10 @@ class DefaultController extends Controller
     {
         /**
          * $basePath can be either exposed (typically inside web/)
-         * or "internal"
+         * or "internal".
          */
         $basePath = $this->container->getParameter('kernel.root_dir').'/Resources/my_custom_folder';
-        $dir = $this->get('kernel')->getRootDir() . "/../../../Dropbox/quota/updates";
+        $dir = $this->get('kernel')->getRootDir() . "/../../Dropbox/quota/updates";
         $handle = fopen("$dir/updates.txt", "r");
         if ($handle) {
             $version="0.0.0";
