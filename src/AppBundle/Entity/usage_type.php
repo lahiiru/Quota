@@ -30,5 +30,13 @@ class usage_type
      * @ORM\OneToMany(targetEntity="slave_user", mappedBy="slave_user")
      */
     protected $slave_usages;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $start;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $end;
 
 }
