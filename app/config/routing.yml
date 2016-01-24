@@ -90,6 +90,10 @@ request_user_change:
     path: /request/user/{zone}/{mac}/change/{package}
     defaults: { _controller: AppBundle:Request:change }
 
+request_user_new:
+    path: /request/user/{zone}/{mac}/new/{name}/{package}/{msg}
+    defaults: { _controller: AppBundle:Request:new }
+
 request_user_message:
     path: /request/user/{zone}/{mac}/message/{subject}/{body}
     defaults: { _controller: AppBundle:Request:message }

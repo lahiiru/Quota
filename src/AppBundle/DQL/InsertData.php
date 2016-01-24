@@ -152,4 +152,31 @@ class InsertData
             return false;
         }
     }
+
+    public function addNewRequest($zone,$mac,$name,$package,$msg){
+        $slave = $this->getSlave("FFFFFFFFFFFF",$zone);
+        $request = new slave_request();
+        if($slave==null){
+            return false;
+        }
+        try{
+            $request->setSlaveUser($slave);
+            $request->setPending(1);
+            $request->setDate(new \DateTime('now'));
+            $data =
+                [
+                    "type"=>"new",
+                    "mac"=>"$mac",
+                    "name"=>"$name",
+                    "package"=>"$package",
+                    "message"=>"$msg"
+                ];
+            $request->setRequestData($data);
+            $this->persist($request);
+            return true;
+        }
+        catch(Exception $e){
+            return false;
+        }
+    }
 }

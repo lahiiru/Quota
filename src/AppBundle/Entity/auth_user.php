@@ -29,6 +29,10 @@ class auth_user extends BaseUser
      */
     protected $packages;
     /**
+     * @ORM\OneToMany(targetEntity="usage_type", mappedBy="auth_user")
+     */
+    protected $usage_types;
+    /**
      * @ORM\OneToMany(targetEntity="slave_user", mappedBy="auth_user")
      */
     protected $slave_users;

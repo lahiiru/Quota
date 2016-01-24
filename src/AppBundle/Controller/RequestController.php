@@ -112,4 +112,18 @@ class RequestController extends Controller
         }
     }
 
+    public function newAction(Request $request,$zone,$mac,$name,$package,$msg){
+        if(strlen($name)<2 || strlen($package)<4){
+            return new Response("INVALID");
+        }
+
+        $inserter = new DQL\InsertData($this,true);
+        if($inserter->addNewRequest($zone,$mac,$name,$package,$msg)){
+            return new Response("OK");
+        }
+        else{
+            return new Response("ERROR");
+        }
+    }
+
 }
