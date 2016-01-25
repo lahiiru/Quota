@@ -27,6 +27,11 @@ class usage_type
      */
     protected $name;
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\auth_user", inversedBy="usage_types")
+     * @ORM\JoinColumn(name="auth_user", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $auth_user;
+    /**
      * @ORM\OneToMany(targetEntity="slave_user", mappedBy="slave_user")
      */
     protected $slave_usages;
