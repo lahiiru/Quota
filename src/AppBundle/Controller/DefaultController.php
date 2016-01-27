@@ -53,6 +53,7 @@ class DefaultController extends Controller
 
     public function overviewAction(Request $request)
     {
+        $this->checkForFirstLogin();
         $fetcher = new DQL\FetchData($this);
 
         $cPackage = $cPackage = $fetcher->getRunningDataPackage();
@@ -141,7 +142,8 @@ class DefaultController extends Controller
         return $html;
     }
 
-    private function checkForFirstLogin($user){
+    private function checkForFirstLogin(){
+        $user=$this->get('security.token_storage')->getToken()->getUser();
         if($user->getZone()=="" || $user->getZone()==null){
             return $this->redirect($this->generateUrl('setZone', array(), false));
         }else{
