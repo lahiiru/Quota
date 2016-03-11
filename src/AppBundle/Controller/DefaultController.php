@@ -53,6 +53,7 @@ class DefaultController extends Controller
 
     public function overviewAction(Request $request)
     {
+        $this->checkForFirstLogin();
         $fetcher = new DQL\FetchData($this);
 
         $cPackage = $cPackage = $fetcher->getRunningDataPackage();
@@ -141,10 +142,14 @@ class DefaultController extends Controller
         return $html;
     }
 
-    private function checkForFirstLogin($user){
+    private function checkForFirstLogin(){
+        $user=$this->get('security.token_storage')->getToken()->getUser();
+		
         if($user->getZone()=="" || $user->getZone()==null){
-            return $this->redirect($this->generateUrl('setZone', array(), false));
+			var_dump($this->redirect($this->generateUrl('setZone', array(), true)));
+            return $this->redirect($this->generateUrl('setZone', array(), true));
         }else{
+			var_dump($user->getZone());
             return null;
         }
     }
@@ -152,7 +157,8 @@ class DefaultController extends Controller
     public function setZoneAction(Request $request)
     {
         $name=$request->request->get('zonename');
-        if($name){
+		var_dump($user);
+        if(!empty($name)){
             if($this->zoneValidator($name)!=0) {
                 var_dump($this->zoneValidator($name));
                 return $this->redirectToRoute('home_error', array('error_name' => 'invalid_zone'));
