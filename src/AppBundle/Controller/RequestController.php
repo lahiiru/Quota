@@ -57,7 +57,12 @@ class RequestController extends Controller
             $fetcher = new DQL\FetchData($this,true);
 
             $result = $fetcher->getClientStatus($mac,$zone);
+            $cPackage = $fetcher->getRunningDataPackage();
+            $remainingBytes = $cPackage->getKbytes()-$fetcher->getSharedQuota(); // Max possible package by users request time
+
             $responseObj->status="NEW";
+            $responseObj->details=$remainingBytes;
+
             if (!empty($result)) {
                 switch ($result['state']) {
                     case 0:
