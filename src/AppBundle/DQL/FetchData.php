@@ -128,6 +128,7 @@ class FetchData
     }
 
     public function getSharedQuota(){
+        // returns available maximum quota for a new user.
         return $this->fetchResult("SELECT SUM(su.package) FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND su.mac!='FFFFFFFFFFFF' GROUP BY au",true);
     }
 
