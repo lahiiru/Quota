@@ -49,10 +49,12 @@ class FetchData
     }
 
     public function getRunningUsageTypeId(){
+		
         return $this->fetchResult("SELECT p.id FROM AppBundle\Entity\usage_type p WHERE p.start < TIME(CURRENT_TIMESTAMP()) AND TIME(CURRENT_TIMESTAMP()) < p.end AND p.auth_user=$this->id ORDER BY p.pid DESC",true);
     }
 
     public function getClientSummaryDTO(){
+		$cp = $this->getRunningDataPackage();
         return $this->fetchResult("SELECT NEW AppBundle\DTO\ClientSummaryDTO(su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes)) FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE au.id=$this->id GROUP BY su");
     }
 
