@@ -124,9 +124,9 @@ class FetchData
     }
 
     public function getClientResponse($mac,$zone){
-        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_DATE() date,CURRENT_TIME() time,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
+        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
         if($result == null){
-            $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_DATE() date,CURRENT_TIME() time,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut ORDER BY ut.precedence",true);
+            $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut ORDER BY ut.precedence",true);
         }
         return $result;
     }
