@@ -48,6 +48,10 @@ class FetchData
         return $this->fetchResult("SELECT p FROM AppBundle\Entity\data_package p WHERE p.start < CURRENT_TIMESTAMP() AND CURRENT_TIMESTAMP() < p.end AND p.auth_user=$this->id ORDER BY p.pid DESC",true);
     }
 
+    public function getRunningDataPackageByZone($zone){
+        return $this->fetchResult("SELECT p FROM AppBundle\Entity\data_package p JOIN p.auth_user au WHERE p.start < CURRENT_TIMESTAMP() AND CURRENT_TIMESTAMP() < p.end AND au.zone=$zone ORDER BY p.pid DESC",true);
+    }
+
     public function getRunningUsageTypeId(){
 		
         return $this->fetchResult("SELECT p.id FROM AppBundle\Entity\usage_type p WHERE p.start < TIME(CURRENT_TIMESTAMP()) AND TIME(CURRENT_TIMESTAMP()) < p.end AND p.auth_user=$this->id ORDER BY p.pid DESC",true);
