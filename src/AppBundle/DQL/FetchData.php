@@ -63,7 +63,8 @@ class FetchData
 
     public function getClientSummaryDTO(){
 		$cp = $this->getRunningDataPackage();
-        return $this->fetchResult("SELECT NEW AppBundle\DTO\ClientSummaryDTO(su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes)) FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE au.id=$this->id GROUP BY su");
+        //ut temporal hardcoded fixture
+        return $this->fetchResult("SELECT NEW AppBundle\DTO\ClientSummaryDTO(su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes)) FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND ut.id=1 GROUP BY su");
     }
 
     public function test(){
@@ -71,7 +72,8 @@ class FetchData
     }
 
     public function getClientStatusDTO($runningPackage){
-        $query = $this->em->createQuery("SELECT NEW AppBundle\DTO\ClientStatusDTO(su.name,MAX(u.date),SUM(u.kbytes),su.state) FROM AppBundle\Entity\slave_usage u JOIN u.slave_user as su JOIN su.auth_user as au WHERE au=$this->id AND  :st < u.date AND u.date < :end GROUP BY su.sid");
+        //ut temporal hardcoded fixture
+        $query = $this->em->createQuery("SELECT NEW AppBundle\DTO\ClientStatusDTO(su.name,MAX(u.date),SUM(u.kbytes),su.state) FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user as su JOIN su.auth_user as au WHERE ut.id=1 AND au=$this->id AND  :st < u.date AND u.date < :end GROUP BY su.sid");
         $pstart=$runningPackage->getStart();
         $pend=$runningPackage->getEnd();
         $query->setParameter('st', $pstart)
