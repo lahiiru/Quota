@@ -28,8 +28,7 @@ class RequestController extends Controller
 
             $cPackage = $fetcher->getRunningDataPackageByZone($zone);
             $shared = $fetcher->getSharedQuotaByZone($zone);
-
-            $remainingBytes = $cPackage->getKbytes(); // Max possible package by users request time.
+            $remainingBytes = $cPackage->getKbytes()-$shared; // Max possible package by users request time.
 
             $responseObj->status="NEW";
             $responseObj->details=$remainingBytes;
@@ -67,7 +66,7 @@ class RequestController extends Controller
             $cPackage = $fetcher->getRunningDataPackageByZone($zone);
             $shared = $fetcher->getSharedQuotaByZone($zone);
 
-            $remainingBytes = $cPackage->getKbytes(); // Max possible package by users request time.
+            $remainingBytes = $cPackage->getKbytes()-$shared; // Max possible package by users request time.
             $responseObj->status="NEW";
             $responseObj->details=$remainingBytes;
             if (!empty($result)) {
