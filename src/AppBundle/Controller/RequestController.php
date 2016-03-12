@@ -20,6 +20,7 @@ class RequestController extends Controller
      */
 
     public function userCheckAction(Request $request,$zone,$mac){
+
         $responseObj = new \StdClass();
         try {
             $fetcher = new DQL\FetchData($this,true);

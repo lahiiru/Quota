@@ -93,14 +93,25 @@ class InsertData
         return $fetcher->getClientByMac($mac,$zone);
     }
 
+    private function getUT($utid,$zone){
+        $fetcher=new FetchData($this->controller,$this->isAnonymous);
+        return $fetcher->getUTByUtid($utid,$zone);
+    }
+
     private function getSlaveBySid($sid,$zone){
         $fetcher=new FetchData($this->controller,$this->isAnonymous);
         return $fetcher->getClientBySid($sid,$zone);
     }
 
     public function updateUsage($mac,$zone,$kbytes){
+        $fetcher=new FetchData($this->controller,$this->isAnonymous);
+
+        $usageType=$fetcher->getRunningUsageType($zone,$mac);
+        $ut=$this->getUT($usageType['utid'],$zone);
+
         $slave=$this->getSlave($mac,$zone);
-        $usage=new slave_usage($slave,new \DateTime('now'),$kbytes);
+
+        $usage=new slave_usage($slave, new \DateTime('now'), $kbytes, $ut);
         $this->persist($usage);
     }
 

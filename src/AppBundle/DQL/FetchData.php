@@ -52,9 +52,13 @@ class FetchData
         return $this->fetchResult("SELECT p FROM AppBundle\Entity\data_package p JOIN p.auth_user au WHERE p.start < CURRENT_TIMESTAMP() AND CURRENT_TIMESTAMP() < p.end AND au.zone='$zone' ORDER BY p.pid DESC",true);
     }
 
-    public function getRunningUsageTypeId(){
-		
-        return $this->fetchResult("SELECT p.id FROM AppBundle\Entity\usage_type p WHERE p.start < TIME(CURRENT_TIMESTAMP()) AND TIME(CURRENT_TIMESTAMP()) < p.end AND p.auth_user=$this->id ORDER BY p.pid DESC",true);
+    public function getRunningUsageType($zone,$mac){
+        $usageByType=$this->fetchResult("SELECT ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
+        if(empty($usageByType)){
+            $usageByType=$this->fetchResult("SELECT ut.id utid,'OVER' utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut ORDER BY ut.precedence",true);
+        }
+        //var_dump($usageByType);
+        return $usageByType;
     }
 
     public function getClientSummaryDTO(){
@@ -112,17 +116,17 @@ class FetchData
     }
 
     public function isOver($mac,$zone){
-        $result = $this->fetchResult("SELECT su.package-SUM(u.kbytes) as state FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone' GROUP BY su",true);
+        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
         if($result==null){
             return false;
         }
-        return $result['state']<1000;
+        return $result['remaining']<1000;
     }
 
     public function getClientResponse($mac,$zone){
-        $result = $this->fetchResult("SELECT su.name,su.package,SUM(u.kbytes) usage,su.comment,su.banner_url,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone' GROUP BY su",true);
+        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_DATE() date,CURRENT_TIME() time,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
         if($result == null){
-            $result = $this->fetchResult("SELECT su.name,su.package,0 AS usage,su.comment,su.banner_url,au.pkey,au.skey FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone'",true);
+            $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_DATE() date,CURRENT_TIME() time,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut ORDER BY ut.precedence",true);
         }
         return $result;
     }
@@ -143,5 +147,9 @@ class FetchData
 
     public function getClientByMac($mac,$zone){
         return $this->fetchResult("SELECT su FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE su.mac='$mac' AND au.zone='$zone'",true);
+    }
+
+    public function getUTByUtid($utid,$zone){
+        return $this->fetchResult("SELECT ut FROM AppBundle\Entity\usage_type ut JOIN ut.auth_user au WHERE au.zone='$zone' AND ut.id=$utid",true);
     }
 }

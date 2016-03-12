@@ -46,13 +46,13 @@ class slave_usage
      * @param $date
      * @param $kbytes
      */
-    public function __construct($slave_user, $date, $kbytes)
+    public function __construct($slave_user, $date, $kbytes, $utid)
     {
         $this->slave_user = $slave_user;
         $this->date = $date;
         $this->kbytes = $kbytes;
+        $this->usage_type = $utid;
     }
-
 
 
     /**
