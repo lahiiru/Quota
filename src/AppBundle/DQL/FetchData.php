@@ -131,9 +131,9 @@ class FetchData
         return $this->fetchResult("SELECT su.sid, su.name, su.package FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND su.mac!='FFFFFFFFFFFF'");
     }
 
-    public function getSharedQuota(){
+    public function getSharedQuotaByZone($zone){
         // returns available maximum quota for a new user.
-        return $this->fetchResult("SELECT SUM(su.package) FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND su.mac!='FFFFFFFFFFFF' GROUP BY au",true);
+        return $this->fetchResult("SELECT SUM(su.package) FROM AppBundle\Entity\slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac!='FFFFFFFFFFFF' GROUP BY au",true);
     }
 
     public function getClientBySid($sid,$zone){
