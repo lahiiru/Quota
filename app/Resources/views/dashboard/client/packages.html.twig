@@ -39,6 +39,9 @@
                     <div class="row">
 
                     </div>
+                    {% if slavePackages is empty %}
+                        (Currently you have no approved clients)
+                    {% endif %}
                     {% set i = 0 %}
                     {% for slave in slavePackages %}
                     <div class="row">
@@ -85,12 +88,14 @@
 
                 </div>
                 <div class="box-body">
-                <div class="box-footer">
-                    <div class="btn-group pull-right">
-                        <button type="button" onclick="window.location='#'" class="package-submit btn btn-warning">Save changes</button>
-                        <button type="button" class="package-reset btn btn-default">Clear changes</button>
+                {% if not slavePackages is empty %}
+                    <div class="box-footer">
+                        <div class="btn-group pull-right">
+                            <button type="button" onclick="window.location='#'" class="package-submit btn btn-warning">Save changes</button>
+                            <button type="button" class="package-reset btn btn-default">Clear changes</button>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
                 </div>
             </div>
             <!-- /.box -->

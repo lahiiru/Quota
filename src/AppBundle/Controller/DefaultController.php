@@ -53,7 +53,10 @@ class DefaultController extends Controller
 
     public function overviewAction(Request $request)
     {
-        $this->checkForFirstLogin();
+        $redirector=$this->checkForFirstLogin();
+        if($redirector!=null){
+            return $redirector;
+        }
         $fetcher = new DQL\FetchData($this);
 
         $cPackage = $cPackage = $fetcher->getRunningDataPackage();
@@ -144,12 +147,9 @@ class DefaultController extends Controller
 
     private function checkForFirstLogin(){
         $user=$this->get('security.token_storage')->getToken()->getUser();
-		
-        if($user->getZone()=="" || $user->getZone()==null){
-			var_dump($this->redirect($this->generateUrl('setZone', array(), true)));
+        if($user->getZone()=="" || $user->getZone()==null || empty($user->getZone())){
             return $this->redirect($this->generateUrl('setZone', array(), true));
         }else{
-			var_dump($user->getZone());
             return null;
         }
     }
@@ -157,10 +157,9 @@ class DefaultController extends Controller
     public function setZoneAction(Request $request)
     {
         $name=$request->request->get('zonename');
-		var_dump($user);
+
         if(!empty($name)){
             if($this->zoneValidator($name)!=0) {
-                var_dump($this->zoneValidator($name));
                 return $this->redirectToRoute('home_error', array('error_name' => 'invalid_zone'));
             }
 
@@ -168,15 +167,26 @@ class DefaultController extends Controller
             $user->setZone($name);
             $user->setPkey(Util\SSIDEncryptor::encode($name));
             $user->setSkey(Util\PassGenerator::generateStrongPassword());
+
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($user);
+
+            $newPkg = new Entity\data_package($user);
+            $newPkg->setKbytes(10000000);
+            $oFirst = new \DateTime('first day of this month');
+            $oLast  = new \DateTime('last day of this month');
+            $oLast->setTime(23, 59, 59);
+            $newPkg->setStart($oFirst);
+            $newPkg->setEnd($oLast);
+
+            $em->persist($newPkg);
             $em->flush();
             // Creating default `Unregistered` user
             $unregisteredUser=new Entity\slave_user("FFFFFFFFFFFF",$user,"UNREGISTERED",0,1);
             $em->persist($unregisteredUser);
             $em->flush();
-            return $this->redirect($this->generateUrl('dashboard', array(), false));
+            return $this->redirect($this->generateUrl('settings_packages', array(), false));
         }else{
             return $this->render('setzone/base.html.twig', array(
                 'zoneName' => '',

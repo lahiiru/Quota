@@ -36,7 +36,7 @@ class usage_type
      */
     protected $auth_user;
     /**
-     * @ORM\OneToMany(targetEntity="slave_user", mappedBy="slave_user")
+     * @ORM\OneToMany(targetEntity="slave_usage", mappedBy="usage_type")
      */
     protected $slave_usages;
     /**

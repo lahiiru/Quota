@@ -100,7 +100,9 @@ class ClientController extends Controller
         $srt.=']';
 
         $packages=$fetcher->getPackageDetail();
+        $packages==null?$packages=[]:1;
         $mappedPackageArray=[];
+
         foreach($packages as $a){
             array_push($mappedPackageArray,
                 [
