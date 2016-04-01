@@ -58,21 +58,15 @@ class DefaultController extends Controller
         if($redirector!=null){
             return $redirector;
         }
-        $errorLevel=0;
         $fetcher = new DQL\FetchData($this);
-        try {
+
             $cPackage = $cPackage = $fetcher->getRunningDataPackage();
-            $pstart = $cPackage->getStart();
-            $pend = $cPackage->getEnd();
-        }
-        catch(Exception $e){
-            $errorLevel=1;
-        }
-        finally{
-            if($errorLevel==1){
+            if($cPackage==null){
                 return $this->redirect($this->generateUrl('settings_packages', array(), true));
             }
-        }
+
+        $pstart = $cPackage->getStart();
+        $pend = $cPackage->getEnd();
         $clientStatusDTO = $fetcher->getClientStatusDTO($cPackage);
         //var_dump($clientStatusDTO);
 

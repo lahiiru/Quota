@@ -27,12 +27,21 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <p class="text-green">
-                    {{ (runningPackage.getKbytes/1000000.0) |number_format(2, '.', ',') }} GB package from
-                    {{ runningPackage.getStart|date('Y-m-d') }} to
-                    {{ runningPackage.getEnd|date('Y-m-d') }}
-                        is currently <b>active</b>
-                    </p>
+
+                        {% if runningPackage is null %}
+                            <p class="text-red">
+                                No packages active. Please add a new package for the current month.
+                            </p>
+                        {% else %}
+                            <p class="text-green">
+                                {{ (runningPackage.getKbytes/1000000.0) |number_format(2, '.', ',') }} GB package from
+                                {{ runningPackage.getStart|date('Y-m-d') }} to
+                                {{ runningPackage.getEnd|date('Y-m-d') }}
+                                is currently <b>active</b>
+                            </p>
+                        {% endif %}
+
+
                 </div>
             </div>
             <!-- /.box -->

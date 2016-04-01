@@ -90,6 +90,7 @@ class FetchData
         $query = $this->em->createQuery("SELECT au.username as authUser ,MAX(u.date) as lastUpdate,su.name,SUM(u.kbytes) as total FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user as su JOIN su.auth_user as au WHERE ut.id=1 AND au=$this->id AND  :st < u.date AND u.date < :end GROUP BY au.id");
         $pstart=$runningPackage->getStart();
         $pend=$runningPackage->getEnd();
+        var_dump($pstart,$pend);
         $query->setParameter('st', $pstart)
             ->setParameter('end', $pend);
         $result = $query->getResult();
