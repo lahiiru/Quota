@@ -63,8 +63,11 @@ class FetchData
 
     public function getClientSummaryDTO(){
 		$cp = $this->getRunningDataPackage();
+        $st = $cp->getStart()->format('Y-m-d H:i:s');
+        $end = $cp->getEnd()->format('Y-m-d H:i:s');
+        //var_dump();
         //ut temporal hardcoded fixture
-        return $this->fetchResult("SELECT NEW AppBundle\DTO\ClientSummaryDTO(su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes)) FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND ut.id=1 GROUP BY su");
+        return $this->fetchResult("SELECT NEW AppBundle\DTO\ClientSummaryDTO(su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes)) FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND ut.id=1 AND u.date > '$st' AND u.date < '$end' GROUP BY su");
     }
 
     public function test(){
@@ -90,7 +93,6 @@ class FetchData
         $query = $this->em->createQuery("SELECT au.username as authUser ,MAX(u.date) as lastUpdate,su.name,SUM(u.kbytes) as total FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user as su JOIN su.auth_user as au WHERE ut.id=1 AND au=$this->id AND  :st < u.date AND u.date < :end GROUP BY au.id");
         $pstart=$runningPackage->getStart();
         $pend=$runningPackage->getEnd();
-        var_dump($pstart,$pend);
         $query->setParameter('st', $pstart)
             ->setParameter('end', $pend);
         $result = $query->getResult();
@@ -126,11 +128,18 @@ class FetchData
         }
         return $result['remaining']<1000;
     }
-
+//--------
     public function getClientResponse($mac,$zone){
-        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
+        $cp = $this->getRunningDataPackageByZone($zone);
+        $st = $cp->getStart()->format('Y-m-d H:i:s');
+        $end = $cp->getEnd()->format('Y-m-d H:i:s');
+
+        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end AND u.date > '$st' AND u.date < '$end' GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
         if($result == null){
-            $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut ORDER BY ut.precedence",true);
+            $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end AND u.date > '$st' AND u.date < '$end' GROUP BY ut ORDER BY ut.precedence",true);
+            if($result == null){
+                $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package) remaining,0 usage,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut ORDER BY ut.precedence",true);
+            }
         }
         return $result;
     }
