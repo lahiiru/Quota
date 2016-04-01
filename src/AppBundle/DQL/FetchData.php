@@ -122,7 +122,11 @@ class FetchData
     }
 
     public function isOver($mac,$zone){
-        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end GROUP BY ut ORDER BY ut.precedence",true);
+        $cp = $this->getRunningDataPackageByZone($zone);
+        $st = $cp->getStart()->format('Y-m-d H:i:s');
+        $end = $cp->getEnd()->format('Y-m-d H:i:s');
+        
+        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,su.comment,su.banner_url,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < CURRENT_TIME() AND CURRENT_TIME() < ut.end AND u.date > '$st' AND u.date < '$end' GROUP BY ut ORDER BY ut.precedence",true);
         if($result==null){
             return false;
         }
