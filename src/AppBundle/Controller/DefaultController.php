@@ -13,6 +13,7 @@ use AppBundle\Util;
 use AppBundle\DTO;
 use AppBundle\DQL;
 use AppBundle\Entity;
+use Symfony\Component\Security\Acl\Exception\Exception;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -57,12 +58,21 @@ class DefaultController extends Controller
         if($redirector!=null){
             return $redirector;
         }
+        $errorLevel=0;
         $fetcher = new DQL\FetchData($this);
-
-        $cPackage = $cPackage = $fetcher->getRunningDataPackage();
-        $pstart=$cPackage->getStart();
-        $pend=$cPackage->getEnd();
-
+        try {
+            $cPackage = $cPackage = $fetcher->getRunningDataPackage();
+            $pstart = $cPackage->getStart();
+            $pend = $cPackage->getEnd();
+        }
+        catch(Exception $e){
+            $errorLevel=1;
+        }
+        finally{
+            if($errorLevel==1){
+                return $this->redirect($this->generateUrl('settings_packages', array(), true));
+            }
+        }
         $clientStatusDTO = $fetcher->getClientStatusDTO($cPackage);
         //var_dump($clientStatusDTO);
 
