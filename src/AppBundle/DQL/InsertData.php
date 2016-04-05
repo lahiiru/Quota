@@ -11,6 +11,7 @@ namespace AppBundle\DQL;
 
 use AppBundle\Entity\slave_usage;
 use AppBundle\Entity\slave_user;
+use AppBundle\Entity\usage_type;
 use Proxies\__CG__\AppBundle\Entity\slave_request;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -59,6 +60,7 @@ class InsertData
                 $newSlave=new slave_user($data['mac'],$cUser,$data['name'],0,$data['package']);
                 $this->persist($newSlave);
                 $this->remove($request);
+                $this->addDummyUsage($cUser->getZone(),$data['mac'],new \DateTime("now"));
                 return $newSlave->getSid();
             case 'message':
                 $this->remove($request);
@@ -86,6 +88,10 @@ class InsertData
 
     public function activatePackage($package){
         $this->persist($package);
+        $slaves = $package->getAuthUser()->getSlaveUsers()->getValues();
+        foreach($slaves as $slave) {
+            $this->addDummyUsage($package->getAuthUser()->getZone(), $slave->getMac(), $package->getStart()->modify('+1 hour'));
+        }
     }
 
     private function getSlave($mac,$zone){
@@ -188,6 +194,17 @@ class InsertData
         }
         catch(Exception $e){
             return false;
+        }
+    }
+
+    public function addDummyUsage($zone,$mac,$time){
+        $slave = $this->getSlave($mac,$zone);
+
+        $usageTypes=$slave->getAuthUser()->getUsageTypes()->getValues();
+        foreach($usageTypes as $ut){
+            var_dump($ut->getId());
+            $usage = new slave_usage($slave,$time,0,$ut);
+            $this->persist($usage);
         }
     }
 }

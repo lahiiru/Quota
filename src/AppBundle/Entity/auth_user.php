@@ -296,6 +296,14 @@ class auth_user extends BaseUser
     }
 
     /**
+     * @return mixed
+     */
+    public function getUsageTypes()
+    {
+        return $this->usage_types;
+    }
+
+    /**
      * Set authType
      *
      * @param string $authType
@@ -318,4 +326,5 @@ class auth_user extends BaseUser
     {
         return $this->auth_type;
     }
+
 }

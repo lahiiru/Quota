@@ -39,6 +39,62 @@ class usage_type
      * @ORM\OneToMany(targetEntity="slave_usage", mappedBy="usage_type")
      */
     protected $slave_usages;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrecedence()
+    {
+        return $this->precedence;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthUser()
+    {
+        return $this->auth_user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlaveUsages()
+    {
+        return $this->slave_usages;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
     /**
      * @ORM\Column(type="time", nullable=true)
      */
