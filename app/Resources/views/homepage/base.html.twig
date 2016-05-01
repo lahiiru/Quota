@@ -58,29 +58,13 @@
                         </li>
                         {% else %}
 
-                        <!-- /.navbar-collapse -->
-                        <!-- Navbar Right Menu -->
-                        <div class="navbar-custom-menu">
-
-                            <a class="btn btn-social-icon btn-facebook" href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook'}) }}">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                            <a class="btn btn-social-icon btn-google" href="{{ path('hwi_oauth_service_redirect', {'service': 'google'}) }}"><i class="fa fa-google-plus"></i></a>
-
-                        </div>
-
                         {% endif %}
                     </ul>
                 </div>
                 <!-- /.navbar-custom-menu -->
             </div>
-            <div style="background:url({{ asset('bundles/images/quota_banner.png') }}) no-repeat center center;height: 500px;">
-
-            </div>
             <!-- /.container-fluid -->
-
         </nav>
-
     </header>
     <!-- Full Width Column -->
     {% block content %}

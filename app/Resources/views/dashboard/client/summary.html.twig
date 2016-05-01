@@ -27,7 +27,12 @@
                         </tr>
                         {% for client in arrayDTO %}
                         <tr>
-                            {% set percentage=100*((client.usage/1000000.0)|number_format(2, '.', ',') / (client.package/1000000.0))|number_format(4, '.', ',') %}
+                            {% if client.package == 0 %}
+                                {% set percentage=0 %}
+                            {% else %}
+                                {% set percentage=100*((client.usage/1000000.0)|number_format(2, '.', ',') / (client.package/1000000.0))|number_format(4, '.', ',') %}
+                            {% endif %}
+
                             {% set color='green' %}
                             {% if percentage>90 %}
                                 {% set color='red' %}
