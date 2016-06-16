@@ -59,6 +59,7 @@ class RequestController extends Controller
     public function usageUpdateAction(Request $request,$zone,$mac,$kbytes){
         $responseObj = new \StdClass();
         try {
+
             $inserter = new DQL\InsertData($this,true);
             $fetcher = new DQL\FetchData($this,true);
 
