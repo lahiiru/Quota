@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="slave_request")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\SlaveRequestRepository")
  */
 class slave_request
 {

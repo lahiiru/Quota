@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="slave_user")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\SlaveUserRepository")
  */
 class slave_user
 {

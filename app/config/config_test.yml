@@ -14,3 +14,13 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     localhost
+        port:     3306
+        dbname:   quota_test
+        user:     root
+        password: null
+        charset:  UTF8
