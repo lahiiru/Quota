@@ -12,6 +12,7 @@ use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\AuthUserRepository")
  * @ORM\Table(name="auth_user")
  * @ORM\AttributeOverrides({@ORM\AttributeOverride(name="username", column=@ORM\Column(type="string", name="username", length=255)),})
  * @ORM\AttributeOverrides({@ORM\AttributeOverride(name="usernameCanonical", column=@ORM\Column(type="string", name="username_canonical", length=255)),})

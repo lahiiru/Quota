@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="slave_payment")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\SlavePaymentRepository")
  */
 class slave_payment
 {

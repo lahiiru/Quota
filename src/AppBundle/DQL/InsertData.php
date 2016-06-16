@@ -17,6 +17,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class InsertData
 {
+    use \Symfony\Component\DependencyInjection\ContainerAwareTrait;
     private $em;
     private $id;
     private $controller;
@@ -26,9 +27,9 @@ class InsertData
      * @param $em
      * @param $id
      */
-    public function __construct($controller,$anonymous=false)
+    public function __construct($controller=null,$anonymous=false)
     {
-        $this->controller=$controller;
+        $this->controller=$this->container;
         $this->em = $controller->getDoctrine()->getManager();
         $this->isAnonymous = $anonymous;
         if(!$anonymous) {

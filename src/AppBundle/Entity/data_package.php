@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="data_package")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\DataPackageRepository")
  */
 class data_package
 {

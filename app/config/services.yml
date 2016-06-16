@@ -16,3 +16,6 @@ services:
         class: "%my_user_provider.class%"
         #this is the place where the properties are passed to the UserProvider - see config.yml
         arguments: [@fos_user.user_manager,{facebook: uid, google: uid}]
+    my.dql.name:
+      class:     AppBundle\DQL\FetchData
+      arguments: [ @doctrine.orm.default_entity_manager ]
