@@ -21,7 +21,7 @@ class FetchData
      * @param $em
      * @param $id
      */
-    public function __construct($controller=null,$anonymous=false)
+    public function __construct($controller,$anonymous=false)
     {
         $this->controller=$this->container;
         $this->em = $controller->getDoctrine()->getManager();
