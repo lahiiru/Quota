@@ -29,7 +29,7 @@ class InsertData
      */
     public function __construct($controller,$anonymous=false)
     {
-        $this->controller=$this->container;
+        $this->controller=$controller;
         $this->em = $controller->getDoctrine()->getManager();
         $this->isAnonymous = $anonymous;
         if(!$anonymous) {
