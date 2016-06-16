@@ -1,0 +1,58 @@
+{% set nav_path='costing/summary' %}
+
+{% extends 'dashboard/base.html.twig' %}
+{% block contentHeader %}Client summary{% endblock %}
+{% block contentDescription %}summary of clients{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Usage by clients</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="payments" class="table table-bordered">
+                        <thead>
+                            <th style="width: 200px">Payee's name</th>
+                            <th style="width: 200px">Payye's package</th>
+                            <th>Invoice No</th>
+                            <th style="width: 200px">Received fee</th>
+                            <th style="width: 200px">On</th>
+                        </thead>
+                        <tbody>
+                        {% for pay in payments %}
+                        <tr>
+                            {% if pay.fee>0 %}
+                                {% set color='green' %}
+                            {% else %}
+                                {% set color='red' %}
+                            {% endif %}
+
+                            <td>{{ pay.name }}</td>
+                            <td>{{ (pay.package/1000000.0)|number_format(2, '.', ',') }} Gb</td>
+                            <td>{{ pay.id }}</td>
+                            <td>LKR. {{ pay.fee }}.00</td>
+                            <td>{{ pay.date|date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+{% endblock %}
+{% block customFooter %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/u/dt/dt-1.10.12/datatables.min.css"/>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/u/dt/dt-1.10.12/datatables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#payments').DataTable();
+        } );
+    </script>
+{% endblock %}

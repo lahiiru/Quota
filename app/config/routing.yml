@@ -79,6 +79,23 @@ change_passkey:
     path: dashboard/settings/change_passkey
     defaults: { _controller: AppBundle:Settings:changePasskey }
 
+payment_add:
+    path: dashboard/payments/add
+    defaults: { _controller: AppBundle:Payment:add }
+
+payment_summary:
+    path: dashboard/payments/view
+    defaults: { _controller: AppBundle:Payment:summary }
+
+payment_due:
+    path: dashboard/payments/due
+    defaults: { _controller: AppBundle:Payment:due }
+
+payment_settings:
+    path: dashboard/payments/settings
+    defaults: { _controller: AppBundle:Payment:settings }
+
+
 request_user_check:
     path: /request/user/{zone}/{mac}/check
     defaults: { _controller: AppBundle:Request:userCheck }

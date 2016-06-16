@@ -148,10 +148,11 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="{% if 'costing/summary' in nav_path %}active{% endif %}"><a href="#"><i class="fa fa-circle-o"></i> Summary</a></li>
-                        <li class="{% if 'costing/add_payment' in nav_path %}active{% endif %}"><a href="#"><i class="fa fa-circle-o"></i> Add Payment</a></li>
-                        <li class="{% if 'costing/payments_due' in nav_path %}active{% endif %}"><a href="#"><i class="fa fa-circle-o"></i> Payments Due</a></li>
-                        <li class="{% if 'costing/settings' in nav_path %}active{% endif %}"><a href="#"><i class="fa fa-circle-o"></i> Settings</a></li>
+                        <li class="{% if 'costing/summary' in nav_path %}active{% endif %}"><a href="{{ path('payment_summary') }}"><i class="fa fa-circle-o"></i> Summary</a></li>
+                        <li class="{% if 'costing/add_payment' in nav_path %}active{% endif %}"><a href="{{ path('payment_add') }}"><i class="fa fa-circle-o"></i> Add Payment</a></li>
+                    <!--    <li class="{% if 'costing/payments_due' in nav_path %}active{% endif %}"><a href="{{ path('payment_due') }}"><i class="fa fa-circle-o"></i> Payments Due</a></li>
+                        <li class="{% if 'costing/settings' in nav_path %}active{% endif %}"><a href="{{ path('payment_settings') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
+                    -->
                     </ul>
                 </li>
                 <li class="treeview {% if 'settings/' in nav_path %}active{% endif %}">
