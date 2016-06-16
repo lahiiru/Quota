@@ -7,9 +7,7 @@
  */
 
 namespace AppBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="slave_payment")
@@ -19,12 +17,16 @@ class slave_payment
 {
     /**
      * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    /**
      * @ORM\ManyToOne(targetEntity="slave_user", inversedBy="slave_payments")
      * @ORM\JoinColumn(name="slave_user", referencedColumnName="sid", onDelete="CASCADE")
      */
     protected $slave_user;
     /**
-     * @ORM\Id
      * @ORM\Column(type="datetime")
      */
     protected $date;
@@ -39,20 +41,17 @@ class slave_payment
      * @param $date
      * @param $fee
      */
-    public function __construct($slave_user, $date, $fee)
+    public function __construct()
     {
-        $this->slave_user = $slave_user;
-        $this->date = $date;
-        $this->fee = $fee;
+        $this->date = new \DateTime('now');
     }
 
-
     /**
-     *  @PrePersist
+     * @return mixed
      */
-    public function doStuffOnPrePersist()
+    public function getId()
     {
-        $this->date = date('Y-m-d H:i:s');
+        return $this->id;
     }
 
     /**
@@ -88,6 +87,30 @@ class slave_payment
     public function getFee()
     {
         return $this->fee;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlaveUser()
+    {
+        return $this->slave_user;
+    }
+
+    /**
+     * @param mixed $slave_user
+     */
+    public function setSlaveUser($slave_user)
+    {
+        $this->slave_user = $slave_user;
+    }
+
+    /**
+     * @param mixed $fee
+     */
+    public function setFee($fee)
+    {
+        $this->fee = $fee;
     }
 
 }
