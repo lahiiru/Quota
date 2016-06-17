@@ -91,7 +91,7 @@
                             <tr>
                                 <th>User</th>
                                 <th>Usage</th>
-                                <th>Last Live At</th>
+                                <th>Last activity on</th>
                                 <th>Status</th>
                             </tr>
                             {% for client in clientStatusDTO %}
@@ -99,7 +99,7 @@
                                     <td>{{ client.name }}</td>
                                     <td>{{ (client.usage/1000.0)|number_format(2, '.', ',') }} Mb</td>
                                     <td>{{ client.LLA }}</td>
-                                    <td><span class="label label-success">{{ client.status }}</span></td>
+                                    <td><span class="label label-success">Active</span></td>
                                 </tr>
                             {% endfor %}
                         </table>

@@ -1,9 +1,8 @@
 <?php
 
 namespace AppBundle\Tests\Entity;
-use AppBundle\Entity\AuthUserRepository;
+use AppBundle\Entity\SlaveUserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use AppBundle\Entity\data_package;
 use \Symfony\Bridge\PhpUnit\ClockMock;
 /**
  * @group time-sensitive
@@ -11,7 +10,7 @@ use \Symfony\Bridge\PhpUnit\ClockMock;
 class SlaveUserRepositoryTest extends WebTestCase
 {
     /**
-     * @var AuthUserRepository
+     * @var SlaveUserRepository
      */
     private $SlaveUserRepository;
 
@@ -37,4 +36,39 @@ class SlaveUserRepositoryTest extends WebTestCase
         ClockMock::withClockMock(false);
     }
 
+    public function testNIGHT_OVER_at_NIGHT()
+    {
+
+        $date = (new \DateTime("2016-06-05 00:30:00", new \DateTimeZone("Asia/Colombo")))->format('U');
+        ClockMock::withClockMock($date);
+
+        $response=$this->SlaveUserRepository->isOver("34238718F80F","NO FREE");
+        $this->assertTrue($response);
+
+        ClockMock::withClockMock(false);
+    }
+
+    public function testDAY_OVER()
+    {
+
+        $date = (new \DateTime("2016-06-05 00:30:00", new \DateTimeZone("Asia/Colombo")))->format('U');
+        ClockMock::withClockMock($date);
+
+        $response=$this->SlaveUserRepository->isOver("00000000000002","NO FREE");
+        $this->assertTrue($response);
+
+        ClockMock::withClockMock(false);
+    }
+
+    public function testBOTH_USED()
+    {
+
+        $date = (new \DateTime("2016-06-05 00:30:00", new \DateTimeZone("Asia/Colombo")))->format('U');
+        ClockMock::withClockMock($date);
+
+        $response=$this->SlaveUserRepository->isOver("00000000000011","NO FREE");
+        $this->assertTrue($response);
+
+        ClockMock::withClockMock(false);
+    }
 }

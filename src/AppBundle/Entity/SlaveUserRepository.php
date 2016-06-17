@@ -9,7 +9,7 @@ class SlaveUserRepository extends EntityRepository{
 
     public function getUsagesByGroupByUt($mac,$zone){
         $cp=$this->getEntityManager()
-            ->getRepository("AppBundle:AuthUser")
+            ->getRepository("AppBundle:auth_user")
             ->getRunningDataPackageByZone($zone);
 
         $st = $cp->getStart()->format('Y-m-d H:i:s');
@@ -41,7 +41,7 @@ class SlaveUserRepository extends EntityRepository{
 
     public function isOver($mac,$zone){
         $cp=$this->getEntityManager()
-            ->getRepository("AppBundle:AuthUser")
+            ->getRepository("AppBundle:auth_user")
             ->getRunningDataPackageByZone($zone);
 
         $st = $cp->getStart()->format('Y-m-d H:i:s');
@@ -65,7 +65,7 @@ class SlaveUserRepository extends EntityRepository{
             ->setParameter('ct',$this->getTimeStamp());
 
         try {
-            $result = $query->getResult();
+            $result = $query->getSingleResult();
             return false;
         } catch (\Doctrine\ORM\NoResultException $e) {
             return true;
@@ -75,7 +75,7 @@ class SlaveUserRepository extends EntityRepository{
 
     public function  hasNoUsage($mac,$zone){
         $cp=$this->getEntityManager()
-            ->getRepository("AppBundle:AuthUser")
+            ->getRepository("AppBundle:auth_user")
             ->getRunningDataPackageByZone($zone);
 
         $st = $cp->getStart()->format('Y-m-d H:i:s');
@@ -102,7 +102,7 @@ class SlaveUserRepository extends EntityRepository{
 
     public function getClientResponse($mac,$zone){
         $cp=$this->getEntityManager()
-            ->getRepository("AppBundle:AuthUser")
+            ->getRepository("AppBundle:auth_user")
             ->getRunningDataPackageByZone($zone);
 
         $st = $cp->getStart()->format('Y-m-d H:i:s');
@@ -113,12 +113,12 @@ class SlaveUserRepository extends EntityRepository{
                 JOIN u.usage_type ut
                 JOIN u.slave_user su
                 JOIN su.auth_user au
-                WHERE au.zone='$zone'
-                  AND su.mac='$mac'
-                  AND ut.start < '$this->ct'
-                  AND '$this->ct' < ut.end
-                  AND u.date > '$st'
-                  AND u.date < '$end'
+                WHERE au.zone=:zone
+                  AND su.mac=:mac
+                  AND ut.start < :ct
+                  AND :ct < ut.end
+                  AND u.date > :st
+                  AND u.date < :end
                 GROUP BY ut
                 HAVING remaining>1000
                 ORDER BY ut.precedence";
@@ -128,10 +128,10 @@ class SlaveUserRepository extends EntityRepository{
                     JOIN u.usage_type ut
                     JOIN u.slave_user su
                     JOIN su.auth_user au
-                    WHERE au.zone='$zone'
-                      AND su.mac='$mac'
-                      AND ut.start < '$this->ct'
-                      AND '$this->ct' < ut.end
+                    WHERE au.zone=:zone
+                      AND su.mac=:mac
+                      AND ut.start < :ct
+                      AND :ct < ut.end
                     GROUP BY ut
                     ORDER BY ut.precedence";
         }elseif($this->isOver($mac,$zone)){
@@ -140,12 +140,12 @@ class SlaveUserRepository extends EntityRepository{
                     JOIN u.usage_type ut
                     JOIN u.slave_user su
                     JOIN su.auth_user au
-                    WHERE au.zone='$zone'
-                      AND su.mac='$mac'
-                      AND ut.start < '$this->ct'
-                      AND '$this->ct' < ut.end
-                      AND u.date > '$st'
-                      AND u.date < '$end'
+                    WHERE au.zone=:zone
+                      AND su.mac=:mac
+                      AND ut.start < :ct
+                      AND :ct < ut.end
+                      AND u.date > :st
+                      AND u.date < :end
                     GROUP BY ut
                     ORDER BY ut.precedence";
         }
@@ -161,10 +161,10 @@ class SlaveUserRepository extends EntityRepository{
             ->setParameter('ct',$this->getTimeStamp());
 
         try {
-            $result = $query->getResult();
+            $result = $query->getSingleResult();
             return $result;
         } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
+            return "no";
         }
 
     }
@@ -185,5 +185,8 @@ class SlaveUserRepository extends EntityRepository{
         }
     }
 
+    public function getApparentTime(){
+        return $this->getTimeStamp();
+    }
 
 }
