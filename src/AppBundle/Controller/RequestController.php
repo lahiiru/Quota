@@ -25,7 +25,7 @@ class RequestController extends Controller
             $pay['date']=$date->format('Y-m-d H:i:s');
             array_push($paymentsNew, $pay);
         }
-        
+
         return new Response(json_encode($paymentsNew));
     }
     /**
