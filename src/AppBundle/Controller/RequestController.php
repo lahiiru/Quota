@@ -15,6 +15,19 @@ use AppBundle\DQL;
 
 class RequestController extends Controller
 {
+    public function userCheckPaymentAction(Request $request,$zone,$mac){
+        $payments = $this->getDoctrine()
+            ->getRepository("AppBundle:slave_payment")
+            ->getPaymentsForSlave($mac, $zone);
+        $paymentsNew = [];
+        foreach($payments as $pay){
+            $date=$pay['date'];
+            $pay['date']=$date->format('Y-m-d H:i:s');
+            array_push($paymentsNew, $pay);
+        }
+        
+        return new Response(json_encode($paymentsNew));
+    }
     /**
      * Process client request sent by app to check user status
      */

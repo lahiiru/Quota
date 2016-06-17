@@ -18,4 +18,21 @@ class SlavePaymentRepository extends EntityRepository{
             return null;
         }
     }
+    public function getPaymentsForSlave($mac,$zone){
+        $query = $this->getEntityManager()
+            ->createQuery(
+                "SELECT p.id as id, p.fee as fee, p.date as date FROM AppBundle\Entity\slave_payment p
+                  JOIN p.slave_user su
+                  JOIN su.auth_user au
+                  WHERE su.mac=:mac AND au.zone=:zone"
+            )
+            ->setParameter('zone', $zone)
+            ->setParameter('mac', $mac);
+
+        try {
+            return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
 }
