@@ -100,6 +100,10 @@ request_user_check:
     path: /request/user/{zone}/{mac}/check
     defaults: { _controller: AppBundle:Request:userCheck }
 
+request_user_check_payment:
+    path: /request/user/{zone}/{mac}/checkpayment
+    defaults: { _controller: AppBundle:Request:userCheckPayment }
+
 request_usage_update:
     path: /request/user/{zone}/{mac}/usage/{kbytes}
     defaults: { _controller: AppBundle:Request:usageUpdate }

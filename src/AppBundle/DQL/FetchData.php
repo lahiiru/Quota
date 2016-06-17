@@ -56,7 +56,7 @@ class FetchData
      *  will be moved to repo class auth_user
      */
     public function getRunningDataPackageByZone($zone){
-        return $this->fetchResult("SELECT p FROM AppBundle\Entity\data_package p JOIN p.auth_user au WHERE p.start < '$this->ct' AND CURRENT_TIMESTAMP() < p.end AND au.zone='$zone' ORDER BY p.pid DESC",true);
+        return $this->fetchResult("SELECT p FROM AppBundle\Entity\data_package p JOIN p.auth_user au WHERE p.start < '$this->ct' AND '$this->ct' < p.end AND au.zone='$zone' ORDER BY p.pid DESC",true);
     }
     /*
      *  will be moved to repo class usage_type
@@ -160,11 +160,11 @@ class FetchData
         $st = $cp->getStart()->format('Y-m-d H:i:s');
         $end = $cp->getEnd()->format('Y-m-d H:i:s');
 
-        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,'$end' expired,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < '$this->ct' AND '$this->ct' < ut.end AND u.date > '$st' AND u.date < '$end' GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
+        $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,'$end' expired,su.comment,su.banner_url,'$this->ct' datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < '$this->ct' AND '$this->ct' < ut.end AND u.date > '$st' AND u.date < '$end' GROUP BY ut HAVING remaining>1000 ORDER BY ut.precedence",true);
         if($result == null){
-            $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,'$end' expired,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < '$this->ct' AND '$this->ct' < ut.end AND u.date > '$st' AND u.date < '$end' GROUP BY ut ORDER BY ut.precedence",true);
+            $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package-SUM(u.kbytes)) remaining,SUM(u.kbytes) usage,'$end' expired,su.comment,su.banner_url,'$this->ct' datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < '$this->ct' AND '$this->ct' < ut.end AND u.date > '$st' AND u.date < '$end' GROUP BY ut ORDER BY ut.precedence",true);
             if($result == null){
-                $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package) remaining,0 usage,'$end' expired,su.comment,su.banner_url,CURRENT_TIMESTAMP () datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < '$this->ct' AND '$this->ct' < ut.end GROUP BY ut ORDER BY ut.precedence",true);
+                $result=$this->fetchResult("SELECT su.name,su.package,ut.id utid,ut.name utname,(su.package) remaining,0 usage,'$end' expired,su.comment,su.banner_url,'$this->ct' datetime,au.pkey,au.skey FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.zone='$zone' AND su.mac='$mac' AND ut.start < '$this->ct' AND '$this->ct' < ut.end GROUP BY ut ORDER BY ut.precedence",true);
             }
         }
         return $result;
