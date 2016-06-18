@@ -127,12 +127,17 @@
     <link rel="stylesheet" href="{{ asset('bundles/plugins/ionslider/normalize.css') }}">
     <!-- jQuery 2.1.4 -->
     <script src="{{ asset('bundles/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    {% block customHeader %}
+
+    {% endblock %}
 </head>
+
 <body class="{{ body_class }} ">
 
 {% block body %}
 
 {% endblock %}
+
 {% block javascripts %}
 <!-- Bootstrap 3.3.5 -->
 <script src="{{ asset('bundles/bootstrap/js/bootstrap.min.js') }}"></script>
