@@ -11,12 +11,18 @@ namespace AppBundle\Entity;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 /**
- * @ORM\Entity
+ *
  * @ORM\Entity(repositoryClass="AppBundle\Entity\AuthUserRepository")
  * @ORM\Table(name="auth_user")
- * @ORM\AttributeOverrides({@ORM\AttributeOverride(name="username", column=@ORM\Column(type="string", name="username", length=255)),})
- * @ORM\AttributeOverrides({@ORM\AttributeOverride(name="usernameCanonical", column=@ORM\Column(type="string", name="username_canonical", length=255)),})
+ * @ORM\Entity
+ * @ORM\AttributeOverrides({
+ *      @ORM\AttributeOverride(name="email", column=@ORM\Column(type="string", name="email", length=255, unique=false, nullable=true)),
+ *      @ORM\AttributeOverride(name="emailCanonical", column=@ORM\Column(type="string", name="email_canonical", length=255, unique=false, nullable=true)),
+ *      @ORM\AttributeOverride(name="usernameCanonical", column=@ORM\Column(type="string", name="username_canonical", length=255)),
+ *      @ORM\AttributeOverride(name="username", column=@ORM\Column(type="string", name="username", length=255)),
+ * })
  */
+
 class auth_user extends BaseUser
 {
     /**
@@ -61,7 +67,7 @@ class auth_user extends BaseUser
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $skey;
-    /** @ORM\Column(name="uid", type="string", length=255) */
+    /** @ORM\Column(name="uid", type="string", length=255, unique=true) */
     protected $uid;
 
     /** @ORM\Column(name="access_token", type="string", length=255, nullable=true) */
