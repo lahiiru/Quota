@@ -56,7 +56,7 @@ class slave_user
      */
     protected $package;
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255)
      */
     protected $comment;
     /**
