@@ -21,6 +21,11 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class DefaultController extends Controller
 {
+    public function socialAction(Request $request)
+    {
+
+        return $this->render('homepage/social.html.twig',[]);
+    }
 
     public function indexAction(Request $request)
     {

@@ -39,6 +39,10 @@ home_error:
     path: /error/{error_name}
     defaults: { _controller: AppBundle:Default:homeError }
 
+home_social:
+    path: /social
+    defaults: { _controller: AppBundle:Default:social }
+
 client_summary:
     path: dashboard/client/summary
     defaults: { _controller: AppBundle:Client:summary }
