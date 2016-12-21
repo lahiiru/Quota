@@ -2,7 +2,7 @@
   
 #Quota Server Application
 
-   share and manage your wifi data with neighbours
+> share and manage your wifi data with neighbours
                             
 This application is requires Symfony2 framwork and Testing requires PHPUnit.    
 Client application source is at [QuotaClientApps](https://github.com/lahiiru/QuotaClientApps) repo.
