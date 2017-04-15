@@ -28,6 +28,10 @@ security:
                     google:             "/login/check-google"
                 login_path:        /fail
                 failure_path:      /
+                always_use_default_target_path: false
+                default_target_path:            /dashboard/overview
+                target_path_parameter:          _target_path
+                use_referer:                    false
                 oauth_user_provider:
                     #this is my custom user provider, created from FOSUBUserProvider - will manage the
                     #automatic user registration on your site, with data from the provider (facebook. google, etc.)

@@ -1,60 +1,110 @@
-{% set nav_path='home/index' %}
 
-{% extends 'homepage/base.html.twig' %}
 
-{% block content %}
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title> Quota | Share your data package among neighbors </title>
 
-    <div class="content-wrapper" style="background-color: #00CCFF;">
+        {% include 'meta.html.twig' %}
 
-        <div class="img-container" style="position: relative;">
-            <img src="{{ asset('bundles/images/quota_banner.svg') }}"
-                 style="position: absolute;top: 0;left: 0;width:100%;">
-        </div>
+        <link rel="stylesheet" href="{{ asset('bundles/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/landing/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/landing/css/animate.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/landing/css/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/landing/css/responsive.css') }}">
+
+        <script>document.write('<div class="loader centered" id="loader"></div>')</script>
+
+        <!-- Js -->
+        <script src="{{ asset('bundles/landing/js/vendor/modernizr-2.6.2.min.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{{ asset('bundles/landing/js/vendor/jquery-1.10.2.min.js') }}"><\/script>')</script>
+        <script src="{{ asset('bundles/landing/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/landing/js/wow.min.js') }}"></script>
+        <script src="{{ asset('bundles/landing/js/main.js') }}"></script>
+        <script>
+         new WOW(
+            ).init();
+        </script>
+		<script>document.querySelector('#loader').remove()</script>
+        <style type="text/css">
+            div.c1 {
+                position: fixed;
+                width: 70px;
+                margin: 0;
+                padding-left: 10px;
+                padding-right: 10px;
+                top: 30%;
+                right: 0;
+                z-index: 10000000;
+                -webkit-border-radius: 10px 0px 0px 10px;
+                -moz-border-radius: 10px 0px 0px 10px;
+                border-radius: 10px 0px 0px 10px;
+                background-color: #FFFFFF;
+                -webkit-box-shadow: #B3B3B3 2px 2px 2px;
+                -moz-box-shadow: #B3B3B3 2px 2px 2px;
+                box-shadow: #B3B3B3 2px 2px 2px;
+            }
+            @media only screen and (max-width: 400px) {
+                .c1 {
+                    display: none;
+                }
+            }
+            .scale {
+                max-width: 100%;
+                height: auto;
+                width: auto\9; /* ie8 */
+            }
+            .img-logins {
+                padding: 4px;
+                cursor: pointer;
+            }
+            .img-logins:hover
+            {
+                -webkit-transform: translateX(-3px);
+                transform: translateX(-3px);
+            }
+        </style>
+    </head>
+    <body>
+    <header>
         <div class="container">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <div class="col-md-3 col-md-offset-9">
-                        <a class="btn btn-block btn-social btn-facebook"
-                           href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook'}) }}">
-                            <i class="fa fa-facebook"></i> Sign in with Facebook
-                        </a>
-                        <a class="btn btn-block btn-social btn-google"
-                           href="{{ path('hwi_oauth_service_redirect', {'service': 'google'}) }}">
-                            <i class="fa fa-google-plus"></i> Sign in with Google
-                        </a>
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <div class="app-showcase wow fadeInDown" data-wow-delay=".5s">
+                        <img class="scale" src="{{ asset('bundles/landing/images/iphone.png') }}" alt="">
                     </div>
-				{% else %}
-				    <div class="col-md-1 col-md-offset-8">
-						<a href="{{ path('overview') }}" class="btn btn-warning"><span class="glyphicon glyphicon-th-list"></span> My admin dashboard</a>
-					</div>
-                {% endif %}
-            </section>
-            <!-- Main content -->
-            <section class="content">
-                <script src="http://connect.facebook.net/en_US/all.js#xfbml=1" type="text/javascript">
-                </script>
-                <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
-                </script>
-                <style type="text/css">
-                    div.c1 {
-                        position: fixed;
-                        width: 70px;
-                        margin: 0;
-                        padding-left: 10px;
-                        padding-right: 10px;
-                        top: 30%;
-                        right: 0;
-                        z-index: 10000000;
-                        -webkit-border-radius: 10px 0px 0px 10px;
-                        -moz-border-radius: 10px 0px 0px 10px;
-                        border-radius: 10px 0px 0px 10px;
-                        background-color: #FFFFFF;
-                        -webkit-box-shadow: #B3B3B3 2px 2px 2px;
-                        -moz-box-shadow: #B3B3B3 2px 2px 2px;
-                        box-shadow: #B3B3B3 2px 2px 2px;
-                    }
-                </style>
+                    
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class="block wow fadeInRight" data-wow-delay="1s">
+                        <a class="logo" href="#">
+                            <img class="scale" src="{{ asset('bundles/landing/images/fb-quota-title.png') }}" alt="">
+                        </a>
+                        <h2>Quota.</br>Way to share internet</h2>
+                        <p>Let you share your data package amoung neighbors</p>
+                        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div class="download-btn">
+                                <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google'}) }}">
+                                    <img class="img-logins" src="{{ asset('bundles/landing/images/g-login.png') }}" alt="">
+                                </a>
+                                <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook'}) }}">
+                                    <img class="img-logins" src="{{ asset('bundles/landing/images/fb-login.png') }}" alt="">
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="download-btn">
+                                <a href="{{ path('overview') }}" class="btn btn-default"><span class="glyphicon glyphicon-user"></span> My account</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+			<section>
                 <div class="c1">
                     <br>
                     <div class="fb-like" data-href="http://quota.wearetrying.info" data-layout="box_count"
@@ -66,12 +116,50 @@
                     <br>
                 </div>
                 <!-- /.box -->
-            </section>
-            <!-- /.content -->
+            </section>	
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav class="navbar navbar-default" role="navigation">
+                      <div class="container-fluid">
+                        <div class="navbar-header">
+                          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                          </button>
+                        </div>
+                        <div class="collapse navbar-collapse text-center" id="bs-example-navbar-collapse-1">
+                          <ul class="nav navbar-nav ">
+                            <li><a href="#">Download</a></li>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Developers</a></li>
+                            <li><a href="#">Privacy</a></li>
+                          </ul>
+                           <div class="social-link pull-right">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-facebook"></i>    
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-twitter"></i>    
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        </div>
+                      </div>
+                    </nav>
+                </div>
+            </div>
         </div>
+    </footer>
 
-        <!-- /.container -->
-    </div>
     {% if model_err_title is defined %}
         <div class="modal modal-warning" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog">
@@ -93,11 +181,11 @@
             <!-- /.modal-dialog -->
         </div>
     {% endif %}
-    <!-- /.modal -->
-    <!-- /.example-modal -->
-{% endblock %}
-{% block customFooter %}
-    <div id="fb-root"></div>
+
+    <script src="http://connect.facebook.net/en_US/all.js#xfbml=1" type="text/javascript">
+    </script>
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+    </script>
     <script>(function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
@@ -105,5 +193,7 @@
             js.id = id;
             js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=896046253825195";
             fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script>
-{% endblock %}
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    </body>
+</html>

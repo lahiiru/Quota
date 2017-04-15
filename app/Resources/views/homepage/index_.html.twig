@@ -1,0 +1,110 @@
+{% set nav_path='home/index' %}
+
+{% extends 'homepage/base.html.twig' %}
+
+{% block content %}
+
+    <div class="content-wrapper" style="background-color: #00CCFF;">
+
+        <div class="img-container" style="position: relative;">
+            <img src="{{ asset('bundles/images/quota_banner.svg') }}"
+                 style="position: absolute;top: 0;left: 0;width:100%;">
+        </div>
+        <div class="container">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <div class="col-md-3 col-md-offset-9">
+                        <a class="btn btn-block btn-social btn-facebook"
+                           href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook'}) }}">
+                            <i class="fa fa-facebook"></i> Sign in with Facebook
+                        </a>
+                        <a class="btn btn-block btn-social btn-google"
+                           href="{{ path('hwi_oauth_service_redirect', {'service': 'google'}) }}">
+                            <i class="fa fa-google-plus"></i> Sign in with Google
+                        </a>
+                    </div>
+				{% else %}
+				    <div class="col-md-1 col-md-offset-8">
+						<a href="{{ path('overview') }}" class="btn btn-warning"><span class="glyphicon glyphicon-th-list"></span> My admin dashboard</a>
+					</div>
+                {% endif %}
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <script src="http://connect.facebook.net/en_US/all.js#xfbml=1" type="text/javascript">
+                </script>
+                <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+                </script>
+                <style type="text/css">
+                    div.c1 {
+                        position: fixed;
+                        width: 70px;
+                        margin: 0;
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        top: 30%;
+                        right: 0;
+                        z-index: 10000000;
+                        -webkit-border-radius: 10px 0px 0px 10px;
+                        -moz-border-radius: 10px 0px 0px 10px;
+                        border-radius: 10px 0px 0px 10px;
+                        background-color: #FFFFFF;
+                        -webkit-box-shadow: #B3B3B3 2px 2px 2px;
+                        -moz-box-shadow: #B3B3B3 2px 2px 2px;
+                        box-shadow: #B3B3B3 2px 2px 2px;
+                    }
+                </style>
+                <div class="c1">
+                    <br>
+                    <div class="fb-like" data-href="http://quota.wearetrying.info" data-layout="box_count"
+                         data-action="like" data-show-faces="true" data-share="true"></div>
+                    <br>
+                    <br>
+                    <div class="g-plusone" data-size="tall" data-href="http://quota.wearetrying.info"></div>
+                    <br>
+                    <br>
+                </div>
+                <!-- /.box -->
+            </section>
+            <!-- /.content -->
+        </div>
+
+        <!-- /.container -->
+    </div>
+    {% if model_err_title is defined %}
+        <div class="modal modal-warning" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">{{ model_err_title }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ model_err_body | raw }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline" data-dismiss="modal">Dismiss</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    {% endif %}
+    <!-- /.modal -->
+    <!-- /.example-modal -->
+{% endblock %}
+{% block customFooter %}
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=896046253825195";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+{% endblock %}
