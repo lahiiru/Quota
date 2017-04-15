@@ -1,0 +1,27 @@
+{% extends 'dashboard/settings/usage_type_base.html.twig' %}
+{% block formDescription %}Edit usage type{% endblock %}
+{% block form_body %}
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+    <div class="form-group">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <div class="btn-group" role="group" aria-label="...">
+                <a class="btn btn-default" href="{{ path('usage_type_index') }}">Back</a>
+                <input type="submit" value="Save" class="btn btn-default">
+                <button onclick="getElementById('delbtn').click()" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
+
+    {{ form_end(edit_form) }}
+
+    <div style="display: none">
+        {{ form_start(delete_form) }}
+        <input type="submit" id="delbtn"  value="Delete">
+        {{ form_end(delete_form) }}
+    </div>
+
+{% endblock %}

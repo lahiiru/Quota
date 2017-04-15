@@ -1,0 +1,44 @@
+{% extends 'dashboard/settings/usage_type_base.html.twig' %}
+
+{% block form_body %}
+    <h1>usage_type</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ usage_type.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ usage_type.name }}</td>
+            </tr>
+            <tr>
+                <th>Precedence</th>
+                <td>{{ usage_type.precedence }}</td>
+            </tr>
+            <tr>
+                <th>Start</th>
+                <td>{% if usage_type.start %}{{ usage_type.start|date('H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>End</th>
+                <td>{% if usage_type.end %}{{ usage_type.end|date('H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('usage_type_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('usage_type_edit', { 'id': usage_type.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'dashboard/settings/usage_type_base.html.twig' %}
+{% block formDescription %}List of usage types{% endblock %}
+{% block form_body %}
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Precedence</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for usage_type in usage_types %}
+            <tr>
+                <td>{{ usage_type.id }}</td>
+                <td>{{ usage_type.name }}</td>
+                <td>{{ usage_type.precedence }}</td>
+                <td>{% if usage_type.start %}{{ usage_type.start|date('H:i:s') }}{% endif %}</td>
+                <td>{% if usage_type.end %}{{ usage_type.end|date('H:i:s') }}{% endif %}</td>
+                <td>
+                    <div class="btn-group pull-right">
+                        <a href="{{ path('usage_type_edit', { 'id': usage_type.id }) }}" class="btn btn-warning btn-xs"><i class="fa fa-fw fa-edit"></i>Edit</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="padding-top: 2%" class="form-group">
+        <a  class="btn btn-default pull-right" href="{{ path('usage_type_new') }}">Add new usage type</a>
+    </div>
+
+
+{% endblock %}
