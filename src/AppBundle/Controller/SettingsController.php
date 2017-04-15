@@ -22,7 +22,14 @@ class SettingsController extends  Controller
     public function packagesAction(Request $request){
         $user=$this->get('security.token_storage')->getToken()->getUser();
         $data_package = new Entity\data_package($user);
-
+		
+            $data_package->setKbytes(25000000);
+            $oFirst = new \DateTime('first day of this month');
+            $oLast  = new \DateTime('last day of this month');
+            $oLast->setTime(23, 59, 59);
+            $data_package->setStart($oFirst);
+            $data_package->setEnd($oLast);
+			
         $form = $this->createFormBuilder($data_package)
             ->add('kbytes', IntegerType::class, array(
                 'required' => true,

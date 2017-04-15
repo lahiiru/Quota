@@ -10,13 +10,14 @@ namespace AppBundle\DTO;
 use AppBundle\Entity;
 class ClientSummaryDTO
 {
-//su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes)
+//su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes),ut
     protected $sid;
     protected $name;
     protected $mac;
     protected $state;
     protected $package;
     protected $usage;
+    protected $ut;
 
     /**
      * ClientSummaryDTO constructor.
@@ -26,8 +27,9 @@ class ClientSummaryDTO
      * @param $state
      * @param $package
      * @param $total
+	 * @param $ut
      */
-    public function __construct($sid, $name, $mac, $state, $package, $total)
+    public function __construct($sid, $name, $mac, $state, $package, $total, $ut)
     {
         $this->sid = $sid;
         $this->name = $name;
@@ -35,6 +37,7 @@ class ClientSummaryDTO
         $this->state = $state;
         $this->package = $package;
         $this->usage = $total;
+		$this->ut = $ut;
     }
 
     /**
@@ -84,5 +87,11 @@ class ClientSummaryDTO
     {
         return $this->usage;
     }
-
+    /**
+     * @return mixed
+     */
+    public function getUt()
+    {
+        return $this->ut;
+    }
 }

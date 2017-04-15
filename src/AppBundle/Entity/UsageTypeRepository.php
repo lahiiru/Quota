@@ -31,4 +31,18 @@ class UsageTypeRepository extends EntityRepository{
         }
     }
 
+    public function getUsageTypes($au)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery(
+                "SELECT ut FROM AppBundle\Entity\usage_type ut WHERE ut.auth_user=:au"
+             )
+            ->setParameter('au', $au);
+        try {
+            return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
 }

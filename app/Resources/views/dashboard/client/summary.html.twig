@@ -16,15 +16,16 @@
                     <table class="table table-bordered">
                         <tr>
                             <th style="width: 10px">#</th>
-                            <th >Name</th>
+                            <th style="width: 50px">Name</th>
                             <th style="width: 40px">MAC</th>
-                            <th style="width: 10px">State</th>
-                            <th style="width: 300px">Usage</th>
+                            <th style="width: 40px">Type</th>
+                            <th >Usage</th>
                             <th style="width: 10px">%</th>
                             <th style="width: 10px">Used</th>
                             <th style="width: 10px">Free</th>
                             <th style="width: 10px">Total</th>
                         </tr>
+						{% set lastClientId=-1%}
                         {% for client in arrayDTO %}
                         <tr>
                             {% if client.package == 0 %}
@@ -39,10 +40,16 @@
                             {% elseif percentage >70 %}
                                 {% set color='yellow' %}
                             {% endif %}
-                            <td>{{ client.sid }}</td>
-                            <td>{{ client.name }}</td>
-                            <td>{{ client.mac }}</td>
-                            <td>OK</td>
+							
+							{% if client.sid == lastClientId %}
+
+							{% else %}
+								<td rowspan="2">{{ client.sid }}</td>
+								<td rowspan="2">{{ client.name }}</td>
+								<td rowspan="2">{{ client.mac }}</td>
+							{% endif %}
+
+                            <td style="white-space: nowrap">{{ client.ut }}</td>
                             <td>
                                 <div class="progress progress-xs">
                                     <div class="progress-bar progress-bar-{{ color }}" style="width: {{percentage }}%"></div>
@@ -53,6 +60,7 @@
                             <td  class="col-md-1">{{ ((client.package-client.usage)/1000000.0)|number_format(2, '.', ',')}} Gb</td>
                             <td  class="col-md-1">{{ (client.package/1000000.0)|number_format(2, '.', ',') }} Gb</td>
                         </tr>
+						{% set lastClientId=client.sid %}
                         {% endfor %}
                     </table>
                 </div>

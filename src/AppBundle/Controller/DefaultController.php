@@ -26,7 +26,13 @@ class DefaultController extends Controller
 
         return $this->render('homepage/social.html.twig',[]);
     }
+	
+    public function aboutAction(Request $request)
+    {
 
+        return $this->render('homepage/about.html.twig',[]);
+    }
+	
     public function indexAction(Request $request)
     {
         $param=array(
@@ -101,8 +107,8 @@ class DefaultController extends Controller
          * or "internal".
          */
         $basePath = $this->container->getParameter('kernel.root_dir').'/Resources/my_custom_folder';
-        $dir = $this->get('kernel')->getRootDir() . "/../../Dropbox/quota/updates";
-        $handle = fopen("$dir/updates.txt", "r");
+        $dir = "../../builds/quota";
+        $handle = fopen("$dir/index.txt", "r");
         if ($handle) {
             $version="0.0.0";
             $link="";
@@ -191,6 +197,27 @@ class DefaultController extends Controller
 
             $em->persist($newPkg);
             $em->flush();
+			
+            $user=$this->get('security.token_storage')->getToken()->getUser();
+            
+            $anyUt = new Entity\usage_type();
+            $anyUt->setStart(new \DateTime("00:00:00"));
+            $anyUt->setEnd(new \DateTime("23:59:59"));
+            $anyUt->setName("ANY TIME");
+            $anyUt->setAuthUser($user);
+            $anyUt->setPrecedence(2);
+
+            $nightUt = new Entity\usage_type();
+            $nightUt->setStart(new \DateTime("00:00:00"));
+            $nightUt->setEnd(new \DateTime("08:00:00"));
+            $nightUt->setName("NIGHT TIME");
+            $nightUt->setAuthUser($user);
+            $nightUt->setPrecedence(1);
+
+            $em->persist($anyUt);
+            $em->persist($nightUt);
+            $em->flush();
+			
             // Creating default `Unregistered` user
             $unregisteredUser=new Entity\slave_user("FFFFFFFFFFFF",$user,"UNREGISTERED",0,1);
             $em->persist($unregisteredUser);

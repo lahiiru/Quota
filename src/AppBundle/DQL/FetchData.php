@@ -69,6 +69,12 @@ class FetchData
         //var_dump($usageByType);
         return $usageByType;
     }
+
+	public function getRunningUtId(){
+        $usageType=$this->fetchResult("SELECT ut.id utid FROM AppBundle\Entity\usage_type ut JOIN ut.auth_user au WHERE au.id=$this->id AND ut.start < '$this->ct' AND '$this->ct' < ut.end ORDER BY ut.precedence",true);
+		return $usageType["utid"];
+	}
+	
     /*
      *  Fetch data method
      */
@@ -78,14 +84,16 @@ class FetchData
         $end = $cp->getEnd()->format('Y-m-d H:i:s');
         //var_dump();
         //ut temporal hardcoded fixture
-        return $this->fetchResult("SELECT NEW AppBundle\DTO\ClientSummaryDTO(su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes)) FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND ut.id=1 AND u.date > '$st' AND u.date < '$end' GROUP BY su");
+		$rutid = $this->getRunningUtId();
+        return $this->fetchResult("SELECT NEW AppBundle\DTO\ClientSummaryDTO(su.sid,su.name,su.mac,su.state,su.package,SUM(u.kbytes),ut.name) FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user su JOIN su.auth_user au WHERE au.id=$this->id AND u.date > '$st' AND u.date < '$end' AND su.mac!='FFFFFFFFFFFF' GROUP BY su,ut");
     }
     /*
      *  Fetch data class
      */
     public function getClientStatusDTO($runningPackage){
         //ut temporal hardcoded fixture
-        $query = $this->em->createQuery("SELECT NEW AppBundle\DTO\ClientStatusDTO(su.name,MAX(u.date),SUM(u.kbytes),su.state) FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user as su JOIN su.auth_user as au WHERE ut.id=1 AND au=$this->id AND  :st < u.date AND u.date < :end GROUP BY su.sid");
+		$rutid = $this->getRunningUtId();
+        $query = $this->em->createQuery("SELECT NEW AppBundle\DTO\ClientStatusDTO(su.name,MAX(u.date),SUM(u.kbytes),su.state) FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user as su JOIN su.auth_user as au WHERE ut.id=$rutid AND au=$this->id AND  :st < u.date AND u.date < :end AND su.mac!='FFFFFFFFFFFF' GROUP BY su.sid");
         $pstart=$runningPackage->getStart();
         $pend=$runningPackage->getEnd();
         $query->setParameter('st', $pstart)
@@ -101,7 +109,8 @@ class FetchData
      */
     public function getTotalUsageObj($runningPackage){
         //ut temporal hardcoded fixture
-        $query = $this->em->createQuery("SELECT au.username as authUser ,MAX(u.date) as lastUpdate,su.name,SUM(u.kbytes) as total FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user as su JOIN su.auth_user as au WHERE ut.id=1 AND au=$this->id AND  :st < u.date AND u.date < :end GROUP BY au.id");
+		$rutid = $this->getRunningUtId();
+        $query = $this->em->createQuery("SELECT au.username as authUser ,MAX(u.date) as lastUpdate,su.name,SUM(u.kbytes) as total,ut.name as utname FROM AppBundle\Entity\slave_usage u JOIN u.usage_type ut JOIN u.slave_user as su JOIN su.auth_user as au WHERE au=$this->id AND  :st < u.date AND u.date < :end AND su.mac!='FFFFFFFFFFFF' GROUP BY au.id,ut");
         $pstart=$runningPackage->getStart();
         $pend=$runningPackage->getEnd();
         $query->setParameter('st', $pstart)
@@ -110,7 +119,7 @@ class FetchData
         if(empty($result)){
             return null;
         }
-        return $result[0];
+        return $result;
     }
     /*
      *  will be moved to repo class slave_request
@@ -198,5 +207,9 @@ class FetchData
 
     public function getUTByUtid($utid,$zone){
         return $this->fetchResult("SELECT ut FROM AppBundle\Entity\usage_type ut JOIN ut.auth_user au WHERE au.zone='$zone' AND ut.id=$utid",true);
+    }
+
+    public function getAuByUtid($utid){
+        return $this->fetchResult("SELECT au.id as id FROM AppBundle\Entity\usage_type ut JOIN ut.auth_user au WHERE ut.id=$utid",true);
     }
 }

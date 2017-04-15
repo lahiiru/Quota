@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BannerController extends Controller
 {
     public function indexAction(Request $request){
-        $html = $this->render('Banner\base.html.twig', array(
+        $html = $this->render('banner\base.html.twig', array(
         ));
         return $html;
     }

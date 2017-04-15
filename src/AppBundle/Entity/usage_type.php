@@ -104,5 +104,43 @@ class usage_type
      * @ORM\Column(type="time", nullable=true)
      */
     protected $end;
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
+    /**
+     * @param mixed $precedence
+     */
+    public function setPrecedence($precedence)
+    {
+        $this->precedence = $precedence;
+    }
+
+    /**
+     * @param mixed $auth_user
+     */
+    public function setAuthUser($auth_user)
+    {
+        $this->auth_user = $auth_user;
+    }
+
+    /**
+     * @param mixed $start
+     */
+    public function setStart($start)
+    {
+        $this->start = $start;
+    }
+
+    /**
+     * @param mixed $end
+     */
+    public function setEnd($end)
+    {
+        $this->end = $end;
+    }
 }

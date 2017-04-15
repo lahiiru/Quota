@@ -21,7 +21,7 @@ class PassGenerator
         if(strpos($available_sets, 'd') !== false)
             $sets[] = '23456789';
         if(strpos($available_sets, 's') !== false)
-            $sets[] = '!@#$%&*?';
+            $sets[] = '!@#$-_*.';  // Not allowed , " : ; \ & % + ' < > ?
         $all = '';
         $password = '';
         foreach($sets as $set)

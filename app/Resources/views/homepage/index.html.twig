@@ -24,6 +24,10 @@
                             <i class="fa fa-google-plus"></i> Sign in with Google
                         </a>
                     </div>
+				{% else %}
+				    <div class="col-md-1 col-md-offset-8">
+						<a href="{{ path('overview') }}" class="btn btn-warning"><span class="glyphicon glyphicon-th-list"></span> My admin dashboard</a>
+					</div>
                 {% endif %}
             </section>
             <!-- Main content -->
