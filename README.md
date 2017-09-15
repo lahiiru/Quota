@@ -1,6 +1,4 @@
-
-  
-#Quota Server Application
+# Quota Server Application
 
 > share and manage your wifi data with neighbours
                             
